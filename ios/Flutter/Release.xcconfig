@@ -1,0 +1,6 @@
+#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
+#include "Generated.xcconfig"
+FLUTTER_TARGET=lib/main.dart
+FLUTTER_BUILD_MODE=release
+ASSET_PREFIX=flutter_assets
+ASSET_MANIFEST=AssetManifest.json
