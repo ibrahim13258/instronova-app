@@ -1,4 +1,4 @@
-// main.dart
+ // main.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,6 +15,8 @@ import 'providers/user_provider.dart';
 import 'providers/post_provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  
   runApp(
     MultiProvider(
       providers: [
@@ -30,74 +32,65 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // Method to check and request necessary permissions
-  Future<void> _checkPermissions() async {
-    // List of permissions needed for the app
-    final permissions = [
-      Permission.camera,
-      Permission.microphone,
-      Permission.storage,
-      Permission.photos,
-      Permission.notifications,
-    ];
-
-    // Check and request each permission
-    for (var permission in permissions) {
-      final status = await permission.status;
-      if (!status.isGranted) {
-        await permission.request();
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Check permissions when app starts
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkPermissions();
-    });
-
     return MaterialApp(
       title: 'Instanova',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.purple,
+          primary: Colors.purple,
+          secondary: Colors.pink,
+        ),
+        useMaterial3: true,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Instagram',
+        fontFamily: 'Cursive', // Changed from 'Instagram' to match your pubspec
       ),
-      home: const PermissionWrapper(child: LoginScreen()),
+      home: const AuthWrapper(),
       routes: {
-        '/login': (context) => const PermissionWrapper(child: LoginScreen()),
-        '/signup': (context) => const PermissionWrapper(child: SignupScreen()),
-        '/home': (context) => const PermissionWrapper(child: HomeScreen()),
-        '/profile': (context) => const PermissionWrapper(child: ProfileScreen()),
-        '/search': (context) => const PermissionWrapper(child: SearchScreen()),
-        '/reels': (context) => const PermissionWrapper(child: ReelsScreen()),
-        '/messages': (context) => const PermissionWrapper(child: MessagesScreen()),
-        '/settings': (context) => const PermissionWrapper(child: SettingsScreen()),
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignupScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/profile': (context) => const ProfileScreen(),
+        '/search': (context) => const SearchScreen(),
+        '/reels': (context) => const ReelsScreen(),
+        '/messages': (context) => const MessagesScreen(),
+        '/settings': (context) => const SettingsScreen(),
       },
     );
   }
 }
 
-// Permission wrapper widget to handle permission requests
-class PermissionWrapper extends StatefulWidget {
-  final Widget child;
-
-  const PermissionWrapper({super.key, required this.child});
+// Auth wrapper to handle authentication state and permissions
+class AuthWrapper extends StatefulWidget {
+  const AuthWrapper({super.key});
 
   @override
-  State<PermissionWrapper> createState() => _PermissionWrapperState();
+  State<AuthWrapper> createState() => _AuthWrapperState();
 }
 
-class _PermissionWrapperState extends State<PermissionWrapper> {
-  bool _permissionsGranted = false;
-  bool _showPermissionDialog = false;
+class _AuthWrapperState extends State<AuthWrapper> {
+  bool _isLoading = true;
+  bool _permissionsChecked = false;
 
   @override
   void initState() {
     super.initState();
-    _checkPermissions();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    // Check authentication state first
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    await authProvider.checkAuthState();
+
+    // Then check permissions
+    await _checkPermissions();
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<void> _checkPermissions() async {
@@ -105,112 +98,40 @@ class _PermissionWrapperState extends State<PermissionWrapper> {
       Permission.camera,
       Permission.microphone,
       Permission.storage,
-    ];
-
-    bool allGranted = true;
-    
-    for (var permission in permissions) {
-      final status = await permission.status;
-      if (!status.isGranted) {
-        allGranted = false;
-        break;
-      }
-    }
-
-    if (!allGranted && !_showPermissionDialog) {
-      setState(() {
-        _showPermissionDialog = true;
-      });
-      
-      // Show permission request dialog
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showPermissionRequestDialog();
-      });
-    } else {
-      setState(() {
-        _permissionsGranted = true;
-      });
-    }
-  }
-
-  void _showPermissionRequestDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Permissions Required'),
-          content: const Text(
-            'Instanova needs access to your camera, microphone, and storage to function properly. '
-            'Please grant these permissions to use all features of the app.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _requestPermissions();
-              },
-              child: const Text('Grant Permissions'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _requestPermissions() async {
-    final permissions = [
-      Permission.camera,
-      Permission.microphone,
-      Permission.storage,
       Permission.photos,
     ];
 
-    final results = await permissions.request();
-
-    // Check if all required permissions are granted
-    final allGranted = results.values.every((status) => status.isGranted);
+    // Request permissions only if not granted
+    for (var permission in permissions) {
+      final status = await permission.status;
+      if (status.isDenied || status.isPermanentlyDenied) {
+        await permission.request();
+      }
+    }
 
     setState(() {
-      _permissionsGranted = allGranted;
-      _showPermissionDialog = false;
+      _permissionsChecked = true;
     });
-
-    if (!allGranted) {
-      // Show message if permissions are not granted
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Some features may not work without permissions'),
-            duration: Duration(seconds: 3),
-          ),
-        );
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return _permissionsGranted
-        ? widget.child
-        : Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const CircularProgressIndicator(),
-                  const SizedBox(height: 20),
-                  const Text('Checking permissions...'),
-                  const SizedBox(height: 20),
-                  if (!_permissionsGranted && !_showPermissionDialog)
-                    ElevatedButton(
-                      onPressed: _requestPermissions,
-                      child: const Text('Request Permissions Again'),
-                    ),
-                ],
-              ),
-            ),
-          );
+    final authProvider = Provider.of<AuthProvider>(context);
+
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    // Return appropriate screen based on auth state
+    if (authProvider.isAuthenticated) {
+      return const HomeScreen();
+    } else {
+      return const LoginScreen();
+    }
   }
 }
 
@@ -243,27 +164,62 @@ class AppPermissions {
       'storage': await checkStoragePermission(),
       'photos': await checkPhotosPermission(),
     };
-
     return permissions;
   }
 
-  static Future<void> requestCameraPermission() async {
-    await Permission.camera.request();
+  static Future<bool> requestCameraPermission() async {
+    final result = await Permission.camera.request();
+    return result.isGranted;
   }
 
-  static Future<void> requestMicrophonePermission() async {
-    await Permission.microphone.request();
+  static Future<bool> requestMicrophonePermission() async {
+    final result = await Permission.microphone.request();
+    return result.isGranted;
   }
 
-  static Future<void> requestStoragePermission() async {
-    await Permission.storage.request();
+  static Future<bool> requestStoragePermission() async {
+    final result = await Permission.storage.request();
+    return result.isGranted;
   }
 
-  static Future<void> requestPhotosPermission() async {
-    await Permission.photos.request();
+  static Future<bool> requestPhotosPermission() async {
+    final result = await Permission.photos.request();
+    return result.isGranted;
   }
 
-  static Future<void> openAppSettings() async {
+  static Future<void> openAppSettingsPage() async {
     await openAppSettings();
   }
-} 
+}
+
+// Simple permission request dialog utility
+class PermissionUtils {
+  static Future<void> showPermissionRequestDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Permissions Required'),
+          content: const Text(
+            'Instanova needs access to your camera, microphone, and storage to function properly. '
+            'Please grant these permissions to use all features of the app.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Later'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                openAppSettings();
+              },
+              child: const Text('Open Settings'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
