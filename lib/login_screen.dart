@@ -1,4 +1,4 @@
-import 'dart:async';
+ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -17,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _forgotPasswordEmailController = TextEditingController();
   final _otpController = TextEditingController();
+  
   bool _isForgotPasswordLoading = false;
   bool _isOtpVerificationLoading = false;
   bool _isPasswordVisible = false;
@@ -38,8 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
     
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final authProvider = context.read<AuthProvider>();
+    final userProvider = context.read<UserProvider>();
 
     try {
       await authProvider.login(
@@ -56,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } catch (error) {
       if (mounted) {
-        _showErrorSnackbar(authProvider.parseError(error));
+        _showErrorSnackbar(authProvider.parseError(error.toString()));
       }
     }
   }
@@ -96,11 +97,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  final _forgotPasswordFormKey = GlobalKey<FormState>();
   Future<void> _sendForgotPasswordOtp() async {
     if (!_forgotPasswordFormKey.currentState!.validate()) return;
     
     final email = _forgotPasswordEmailController.text.trim();
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final authProvider = context.read<AuthProvider>();
     
     setState(() => _isForgotPasswordLoading = true);
     
@@ -113,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } catch (error) {
       if (mounted) {
-        _showErrorSnackbar(authProvider.parseError(error));
+        _showErrorSnackbar(authProvider.parseError(error.toString()));
       }
     } finally {
       if (mounted) {
@@ -134,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final authProvider = context.read<AuthProvider>();
     
     setState(() => _isOtpVerificationLoading = true);
     
@@ -146,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } catch (error) {
       if (mounted) {
-        _showErrorSnackbar(authProvider.parseError(error));
+        _showErrorSnackbar(authProvider.parseError(error.toString()));
       }
     } finally {
       if (mounted) {
@@ -159,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: Theme.of(context).errorColor,
+        backgroundColor: Theme.of(context).colorScheme.error,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -175,7 +177,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  final _forgotPasswordFormKey = GlobalKey<FormState>();
   void _showForgotPasswordDialog() {
     showDialog(
       context: context,
@@ -240,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
               if (_otpExpired)
                 Text(
                   'OTP expired!',
-                  style: TextStyle(color: Theme.of(context).errorColor),
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
               const SizedBox(height: 16),
               TextFormField(
@@ -310,54 +311,101 @@ class _LoginScreenState extends State<LoginScreen> {
     return 'Strong';
   }
 
-  final _resetPasswordFormKey = GlobalKey<FormState>();
   void _showResetPasswordDialog(String email, String otp) {
     final newPasswordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
-    bool _isResettingPassword = false;
-    bool _isNewPasswordVisible = false;
-    bool _isConfirmPasswordVisible = false;
-    String _passwordStrength = '';
 
     showDialog(
       context: context,
-      builder: (ctx) => StatefulBuilder(
-        builder: (context, setState) {
-          return AlertDialog(
-            title: const Text('Reset Password'),
-            content: Form(
-              key: _resetPasswordFormKey,
+      builder: (ctx) => _ResetPasswordDialog(
+        email: email,
+        otp: otp,
+        onSuccess: () {
+          if (mounted) {
+            Navigator.popUntil(context, (route) => route.isFirst);
+            _showSuccessSnackbar('Password reset successful! Please login');
+          }
+        },
+        onError: _showErrorSnackbar,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
+    final theme = Theme.of(context);
+
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Logo
+                  Text(
+                    'Instanova',
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Cursive',
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  
+                  // Email/Username Field
                   TextFormField(
-                    controller: newPasswordController,
-                    obscureText: !_isNewPasswordVisible,
-                    onChanged: (value) {
-                      setState(() {
-                        _passwordStrength = _getPasswordStrength(value);
-                      });
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Email or Username',
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.email),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email or username';
+                      }
+                      if (value.contains('@')) {
+                        if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(value)) {
+                          return 'Please enter a valid email';
+                        }
+                      } else {
+                        if (!RegExp(r'^[a-z0-9_]+$').hasMatch(value)) {
+                          return 'Only lowercase letters, numbers and _ allowed';
+                        }
+                      }
+                      return null;
                     },
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  // Password Field
+                  TextFormField(
+                    controller: _passwordController,
+                    obscureText: !_isPasswordVisible,
                     decoration: InputDecoration(
-                      labelText: 'New Password',
+                      labelText: 'Password',
                       border: const OutlineInputBorder(),
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _isNewPasswordVisible 
+                          _isPasswordVisible 
                             ? Icons.visibility 
                             : Icons.visibility_off,
                         ),
                         onPressed: () {
                           setState(() {
-                            _isNewPasswordVisible = !_isNewPasswordVisible;
+                            _isPasswordVisible = !_isPasswordVisible;
                           });
                         },
                       ),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter new password';
+                        return 'Please enter your password';
                       }
                       if (value.length < 6) {
                         return 'Password must be at least 6 characters';
@@ -365,239 +413,239 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
-                  if (_passwordStrength.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Strength: ',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                          Text(
-                            _passwordStrength,
-                            style: TextStyle(
-                              color: _passwordStrength == 'Weak'
-                                  ? Colors.red
-                                  : _passwordStrength == 'Medium'
-                                      ? Colors.orange
-                                      : Colors.green,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
+                  const SizedBox(height: 8),
+                  
+                  // Forgot Password
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: _showForgotPasswordDialog,
+                      child: const Text('Forgot Password?'),
                     ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: confirmPasswordController,
-                    obscureText: !_isConfirmPasswordVisible,
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      border: const OutlineInputBorder(),
-                      prefixIcon: const Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isConfirmPasswordVisible 
-                            ? Icons.visibility 
-                            : Icons.visibility_off,
+                  ),
+                  const SizedBox(height: 24),
+                  
+                  // Login Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: authProvider.isLoading ? null : _login,
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        onPressed: () {
-                          setState(() {
-                            _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
-                          });
-                        },
+                        backgroundColor: theme.colorScheme.primary,
+                        foregroundColor: theme.colorScheme.onPrimary,
                       ),
+                      child: authProvider.isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text('Login'),
                     ),
-                    validator: (value) {
-                      if (value != newPasswordController.text) {
-                        return 'Passwords do not match';
-                      }
-                      return null;
-                    },
+                  ),
+                  const SizedBox(height: 24),
+                  
+                  // Signup Link
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account?"),
+                      TextButton(
+                        onPressed: () => Navigator.pushNamed(context, '/signup'),
+                        child: const Text('Sign Up'),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(ctx),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: _isResettingPassword
-                    ? null
-                    : () async {
-                        if (_resetPasswordFormKey.currentState!.validate()) {
-                          setState(() => _isResettingPassword = true);
-                          try {
-                            await Provider.of<AuthProvider>(context, listen: false)
-                                .resetPassword(
-                              email,
-                              otp,
-                              newPasswordController.text,
-                            );
-                            if (mounted) {
-                              Navigator.popUntil(
-                                context,
-                                (route) => route.isFirst,
-                              );
-                              _showSuccessSnackbar('Password reset successful! Please login');
-                            }
-                          } catch (error) {
-                            if (mounted) {
-                              _showErrorSnackbar(
-                                Provider.of<AuthProvider>(context, listen: false)
-                                    .parseError(error),
-                              );
-                            }
-                          } finally {
-                            if (mounted) {
-                              setState(() => _isResettingPassword = false);
-                            }
-                          }
-                        }
-                      },
-                child: _isResettingPassword
-                    ? const CircularProgressIndicator()
-                    : const Text('Reset Password'),
-              ),
-            ],
-          );
-        },
+          ),
+        ),
       ),
     );
+  }
+}
+
+class _ResetPasswordDialog extends StatefulWidget {
+  final String email;
+  final String otp;
+  final VoidCallback onSuccess;
+  final Function(String) onError;
+
+  const _ResetPasswordDialog({
+    required this.email,
+    required this.otp,
+    required this.onSuccess,
+    required this.onError,
+  });
+
+  @override
+  State<_ResetPasswordDialog> createState() => _ResetPasswordDialogState();
+}
+
+class _ResetPasswordDialogState extends State<_ResetPasswordDialog> {
+  final _formKey = GlobalKey<FormState>();
+  final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  
+  bool _isResettingPassword = false;
+  bool _isNewPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+  String _passwordStrength = '';
+
+  @override
+  void dispose() {
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  String _getPasswordStrength(String password) {
+    if (password.isEmpty) return '';
+    if (password.length < 6) return 'Weak';
+    if (!RegExp(r'[A-Z]').hasMatch(password) ||
+        !RegExp(r'[0-9]').hasMatch(password)) {
+      return 'Medium';
+    }
+    return 'Strong';
+  }
+
+  Future<void> _resetPassword() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isResettingPassword = true);
+    
+    try {
+      await context.read<AuthProvider>().resetPassword(
+        widget.email,
+        widget.otp,
+        _newPasswordController.text,
+      );
+      if (mounted) {
+        Navigator.pop(context);
+        widget.onSuccess();
+      }
+    } catch (error) {
+      if (mounted) {
+        widget.onError(context.read<AuthProvider>().parseError(error.toString()));
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isResettingPassword = false);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Logo
-                Text(
-                  'Instanova',
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Cursive',
+    return AlertDialog(
+      title: const Text('Reset Password'),
+      content: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: _newPasswordController,
+              obscureText: !_isNewPasswordVisible,
+              onChanged: (value) {
+                setState(() {
+                  _passwordStrength = _getPasswordStrength(value);
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'New Password',
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.lock),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isNewPasswordVisible 
+                      ? Icons.visibility 
+                      : Icons.visibility_off,
                   ),
-                ),
-                const SizedBox(height: 40),
-                
-                // Email/Username Field
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email or Username',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email or username';
-                    }
-                    if (value.contains('@')) {
-                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(value)) {
-                        return 'Please enter a valid email';
-                      }
-                    } else {
-                      if (!RegExp(r'^[a-z0-9_]+$').hasMatch(value)) {
-                        return 'Only lowercase letters, numbers and _ allowed';
-                      }
-                    }
-                    return null;
+                  onPressed: () {
+                    setState(() {
+                      _isNewPasswordVisible = !_isNewPasswordVisible;
+                    });
                   },
                 ),
-                const SizedBox(height: 16),
-                
-                // Password Field
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: !_isPasswordVisible,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible 
-                          ? Icons.visibility 
-                          : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 8),
-                
-                // Forgot Password
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: _showForgotPasswordDialog,
-                    child: const Text('Forgot Password?'),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                
-                // Login Button
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: authProvider.isLoading ? null : _login,
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      backgroundColor: theme.primaryColor,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: authProvider.isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text('Login'),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                
-                // Signup Link
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter new password';
+                }
+                if (value.length < 6) {
+                  return 'Password must be at least 6 characters';
+                }
+                return null;
+              },
+            ),
+            if (_passwordStrength.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Row(
                   children: [
-                    const Text("Don't have an account?"),
-                    TextButton(
-                      onPressed: () => Navigator.pushNamed(context, '/signup'),
-                      child: const Text('Sign Up'),
+                    Text(
+                      'Strength: ',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    Text(
+                      _passwordStrength,
+                      style: TextStyle(
+                        color: _passwordStrength == 'Weak'
+                            ? Colors.red
+                            : _passwordStrength == 'Medium'
+                                ? Colors.orange
+                                : Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
-              ],
+              ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _confirmPasswordController,
+              obscureText: !_isConfirmPasswordVisible,
+              decoration: InputDecoration(
+                labelText: 'Confirm Password',
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.lock),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isConfirmPasswordVisible 
+                      ? Icons.visibility 
+                      : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                    });
+                  },
+                ),
+              ),
+              validator: (value) {
+                if (value != _newPasswordController.text) {
+                  return 'Passwords do not match';
+                }
+                return null;
+              },
             ),
-          ),
+          ],
         ),
       ),
+      actions: [
+        TextButton(
+          onPressed: _isResettingPassword ? null : () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: _isResettingPassword ? null : _resetPassword,
+          child: _isResettingPassword
+              ? const CircularProgressIndicator()
+              : const Text('Reset Password'),
+        ),
+      ],
     );
   }
 }
