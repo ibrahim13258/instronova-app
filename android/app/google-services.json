@@ -1,33 +1,33 @@
 {
   "project_info": {
     "project_number": "123456789012",
-    "project_id": "instanova-app-7a3b1",
-    "storage_bucket": "instanova-app-7a3b1.appspot.com"
+    "project_id": "instaphoto-advanced-app",
+    "storage_bucket": "instaphoto-advanced-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:123456789012:android:abc123def456",
         "android_client_info": {
-          "package_name": "com.instanova.app"
+          "package_name": "com.socialmedia.instaphoto"
         }
       },
       "oauth_client": [
         {
-          "client_id": "123456789012-abc123def456ghijklmnopqrstuvwxyz.apps.googleusercontent.com",
+          "client_id": "123456789012-abc123def456.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyABC123DEF456GHI789JKL012MNO345PQR678ST"
+          "current_key": "AIzaSyABC123DEF456ghi789jkl012mno345pqr678stu"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "123456789012-abc123def456ghijklmnopqrstuvwxyz.apps.googleusercontent.com",
+              "client_id": "123456789012-abc123def456.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
