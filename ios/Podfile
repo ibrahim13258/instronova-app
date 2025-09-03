@@ -1,7 +1,7 @@
- # Uncomment this line to define a global platform for your project
-platform :ios, '13.0'
+# Uncomment this line to define a global platform for your project
+platform :ios, '12.0'
 
-# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
+CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 project 'Runner', {
@@ -17,7 +17,7 @@ def flutter_root
   end
 
   File.foreach(generated_xcode_build_settings_path) do |line|
-    matches = line.match(/FLUTTER_ROOT\=(.*)/)
+    matches = line.match(/FLUTTER_ROOT=(.*)/)
     return matches[1].strip if matches
   end
   raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run flutter pub get"
@@ -31,46 +31,45 @@ target 'Runner' do
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
   
+  # Firebase dependencies
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+  pod 'Firebase/Storage'
+  
   # Additional pods for Instanova features - updated to latest versions
-  pod 'Firebase/CoreOnly', '10.22.0'
-  pod 'Firebase/Auth', '10.22.0'
-  pod 'Firebase/Firestore', '10.22.0'
-  pod 'Firebase/Storage', '10.22.0'
   pod 'Firebase/Messaging', '10.22.0'
   pod 'Firebase/Analytics', '10.22.0'
-  pod 'SDWebImage', '~> 5.18.0'
-  pod 'GoogleSignIn', '7.0.0'
-  pod 'FBSDKLoginKit', '~> 16.2.0'
+  pod 'SDWebImage', '> 16.2.0'
   pod 'FBSDKCoreKit', '~> 16.2.0'
   pod 'IQKeyboardManagerSwift', '6.5.0'
   pod 'SVProgressHUD', '2.2.5'
-  
+
   # Additional recommended pods for social media app
-  pod 'ImagePicker', '~> 3.0'
-  pod 'Cache', '~> 6.0'
+  pod 'ImagePicker', '> 6.0'
 end
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
-    
-    # Additional build settings
-    target.build_configurations.each do |config|
-      config.build_settings['ENABLE_BITCODE'] = 'NO'
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
-      config.build_settings['SWIFT_VERSION'] = '5.7'
-      config.build_settings['ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES'] = 'NO'
-      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-      
-      # Enable new build system and arm64
-      config.build_settings['ARCHS[sdk=iphonesimulator*]'] = 'arm64 x86_64'
-      
-      # Fix for Xcode 15+ compatibility
-      config.build_settings['DEAD_CODE_STRIPPING'] = 'YES'
-      config.build_settings['GCC_OPTIMIZATION_LEVEL'] = 's'
+
+    # Additional build settings  
+    target.build_configurations.each do |config|  
+      config.build_settings['ENABLE_BITCODE'] = 'NO'  
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'  
+      config.build_settings['SWIFT_VERSION'] = '5.7'  
+      config.build_settings['ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES'] = 'NO'  
+      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'  
+        
+      # Enable new build system and arm64  
+      config.build_settings['ARCHS[sdk=iphonesimulator*]'] = 'arm64 x86_64'  
+        
+      # Fix for Xcode 15+ compatibility  
+      config.build_settings['DEAD_CODE_STRIPPING'] = 'YES'  
+      config.build_settings['GCC_OPTIMIZATION_LEVEL'] = 's'  
     end
   end
-  
+
   # Fix for Firebase and Flutter compatibility
   installer.pods_project.build_configurations.each do |config|
     config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'i386'
