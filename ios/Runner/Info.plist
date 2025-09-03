@@ -2,92 +2,66 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleDevelopmentRegion</key>
-    <string>$(DEVELOPMENT_LANGUAGE)</string>
-    <key>CFBundleExecutable</key>
-    <string>$(EXECUTABLE_NAME)</string>
+    <!-- App Identity & Metadata -->
     <key>CFBundleIdentifier</key>
-    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-    <key>CFBundleInfoDictionaryVersion</key>
-    <string>6.0</string>
+    <string>com.socialmedia.instaphoto</string>
     <key>CFBundleName</key>
-    <string>Instanova</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-    <key>CFBundleShortVersionString</key>
-    <string>$(FLUTTER_BUILD_NAME)</string>
-    <key>CFBundleSignature</key>
-    <string>????</string>
+    <string>InstaPhoto</string>
+    <key>CFBundleDisplayName</key>
+    <string>InstaPhoto</string>
     <key>CFBundleVersion</key>
-    <string>$(FLUTTER_BUILD_NUMBER)</string>
-    <key>LSRequiresIPhoneOS</key>
-    <true/>
+    <string>1</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.0</string>
     
-    <!-- Permissions -->
-    <key>NSCameraUsageDescription</key>
-    <string>Instanova needs camera access to take photos and videos</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Instanova needs photo library access to upload photos and videos</string>
-    <key>NSPhotoLibraryAddUsageDescription</key>
-    <string>Instanova needs photo library access to save photos and videos</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Instanova needs microphone access to record audio with videos</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Instanova needs location access to tag posts with location</string>
-    <key>NSContactsUsageDescription</key>
-    <string>Instanova needs contacts access to find friends</string>
-    <key>NSAppleMusicUsageDescription</key>
-    <string>Instanova needs music access for adding music to reels</string>
-    
-    <!-- Firebase Configuration -->
-    <key>FirebaseAutomaticScreenReportingEnabled</key>
-    <false/>
-    
-    <!-- Facebook Configuration -->
+    <!-- URL Types for Deep Linking -->
     <key>CFBundleURLTypes</key>
     <array>
         <dict>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>com.socialmedia.instaphoto</string>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>fb${FACEBOOK_APP_ID}</string>
-            </array>
-        </dict>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>${GOOGLE_REVERSED_CLIENT_ID}</string>
-            </array>
-        </dict>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>instanova</string>
+                <string>instaphoto</string>
             </array>
         </dict>
     </array>
-    <key>FacebookAppID</key>
-    <string>${FACEBOOK_APP_ID}</string>
-    <key>FacebookDisplayName</key>
-    <string>Instanova</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>fbapi</string>
-        <string>fb-messenger-share-api</string>
-        <string>fbauth2</string>
-        <string>fbshareextension</string>
-    </array>
+    
+    <!-- Permissions (Privacy Usage Descriptions) -->
+    <key>NSCameraUsageDescription</key>
+    <string>InstaPhoto needs camera access to capture photos and videos for your posts</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>InstaPhoto needs photo library access to select photos and videos for your posts</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>InstaPhoto needs permission to save photos and videos to your library</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>InstaPhoto needs microphone access to record audio for your videos</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>InstaPhoto needs location access to tag your posts with location information</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>InstaPhoto needs location access to provide location-based features and recommendations</string>
+    <key>NSContactsUsageDescription</key>
+    <string>InstaPhoto needs contacts access to help you find friends to connect with</string>
+    <key>NSCalendarsUsageDescription</key>
+    <string>InstaPhoto needs calendar access to remind you about events and scheduled posts</string>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>InstaPhoto needs music access to add songs to your stories and videos</string>
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>InstaPhoto needs Bluetooth for connecting to nearby devices and accessories</string>
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>InstaPhoto needs Bluetooth for connecting to smart devices and accessories</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>InstaPhoto uses Face ID to securely log you into your account</string>
     
     <!-- Background Modes -->
     <key>UIBackgroundModes</key>
     <array>
-        <string>remote-notification</string>
+        <string>audio</string>
         <string>fetch</string>
+        <string>remote-notification</string>
+        <string>location</string>
     </array>
     
     <!-- App Transport Security -->
@@ -95,55 +69,177 @@
     <dict>
         <key>NSAllowsArbitraryLoads</key>
         <true/>
-        <key>NSExceptionDomains</key>
+        <key>NSAllowsArbitraryLoadsInWebContent</key>
+        <true/>
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+    </dict>
+    
+    <!-- Universal Links & Handoff -->
+    <key>NSUserActivityTypes</key>
+    <array>
+        <string>com.socialmedia.instaphoto.browsing</string>
+        <string>com.socialmedia.instaphoto.posting</string>
+        <string>com.socialmedia.instaphoto.messaging</string>
+    </array>
+    
+    <key>com.apple.developer.associated-domains</key>
+    <array>
+        <string>applinks:instaphoto.app</string>
+        <string>applinks:www.instaphoto.app</string>
+        <string>applinks:api.instaphoto.app</string>
+    </array>
+    
+    <!-- Push Notifications Configuration -->
+    <key>FirebaseAppDelegateProxyEnabled</key>
+    <false/>
+    
+    <!-- Security & Privacy -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>whatsapp</string>
+        <string>fb</string>
+        <string>fbapi</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
+        <string>twitter</string>
+        <string>twitterauth</string>
+        <string>instagram</string>
+        <string>instagram-stories</string>
+        <string>snapchat</string>
+        <string>tiktok</string>
+        <string>viber</string>
+        <string>telegram</string>
+        <string>slack</string>
+        <string>messenger</string>
+    </array>
+    
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
+    
+    <!-- Device Capabilities -->
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+        <string>arm64</string>
+        <string>camera</string>
+        <string>gps</string>
+        <string>location-services</string>
+        <string>microphone</string>
+    </array>
+    
+    <key>UIRequiresFullScreen</key>
+    <true/>
+    
+    <!-- Orientation & UI Configuration -->
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>
+    
+    <!-- App Icons -->
+    <key>CFBundleIcons</key>
+    <dict>
+        <key>CFBundlePrimaryIcon</key>
         <dict>
-            <key>google.com</key>
-            <dict>
-                <key>NSIncludesSubdomains</key>
-                <true/>
-                <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-                <false/>
-            </dict>
-            <key>facebook.com</key>
-            <dict>
-                <key>NSIncludesSubdomains</key>
-                <true/>
-                <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-                <false/>
-            </dict>
-            <key>firebaseio.com</key>
-            <dict>
-                <key>NSIncludesSubdomains</key>
-                <true/>
-                <key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
-                <false/>
-            </dict>
+            <key>CFBundleIconFiles</key>
+            <array>
+                <string>AppIcon60x60</string>
+            </array>
+            <key>UIPrerenderedIcon</key>
+            <false/>
         </dict>
     </dict>
     
-    <!-- iOS 13+ SceneDelegate support -->
+    <key>CFBundleIcons~ipad</key>
+    <dict>
+        <key>CFBundlePrimaryIcon</key>
+        <dict>
+            <key>CFBundleIconFiles</key>
+            <array>
+                <string>AppIcon76x76</string>
+            </array>
+            <key>UIPrerenderedIcon</key>
+            <false/>
+        </dict>
+    </dict>
+    
+    <!-- Status Bar Configuration -->
+    <key>UIStatusBarStyle</key>
+    <string>UIStatusBarStyleDefault</string>
+    <key>UIViewControllerBasedStatusBarAppearance</key>
+    <true/>
+    
+    <!-- App Clip Configuration -->
+    <key>NSAppClip</key>
+    <dict>
+        <key>NSAppClipRequestEphemeralUserNotification</key>
+        <false/>
+        <key>NSAppClipRequestLocationConfirmation</key>
+        <false/>
+    </dict>
+    
+    <!-- Widget Extensions -->
+    <key>NSExtension</key>
+    <dict>
+        <key>NSExtensionPointIdentifier</key>
+        <string>com.apple.widgetkit-extension</string>
+    </dict>
+    
+    <!-- Maps Configuration -->
+    <key>Maps</key>
+    <dict>
+        <key>APIKey</key>
+        <string>YOUR_MAPS_API_KEY_HERE</string>
+    </dict>
+    
+    <!-- Firebase Configuration Reference -->
+    <key>FirebaseAutomaticScreenReportingEnabled</key>
+    <false/>
+    
+    <!-- Default Configuration -->
+    <key>UIMainStoryboardFile</key>
+    <string>Main</string>
+    <key>UIAppFonts</key>
+    <array>
+        <string>Roboto-Regular.ttf</string>
+        <string>Roboto-Bold.ttf</string>
+        <string>Roboto-Italic.ttf</string>
+    </array>
+    
+    <!-- Development Settings -->
+    <key>UIApplicationSupportsIndirectInputEvents</key>
+    <true/>
     <key>UIApplicationSceneManifest</key>
     <dict>
         <key>UIApplicationSupportsMultipleScenes</key>
         <false/>
         <key>UISceneConfigurations</key>
         <dict>
-            <key>UIWindowScene</key>
-            <dict>
-                <key>UISceneConfigurationName</key>
-                <string>Default Configuration</string>
-                <key>UISceneDelegateClassName</key>
-                <string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-            </dict>
+            <key>UIWindowSceneSessionRoleApplication</key>
+            <array>
+                <dict>
+                    <key>UISceneConfigurationName</key>
+                    <string>Default Configuration</string>
+                    <key>UISceneDelegateClassName</key>
+                    <string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+                    <key>UISceneStoryboardFile</key>
+                    <string>Main</string>
+                </dict>
+            </array>
         </dict>
     </dict>
-    
-    <!-- Launch Screen -->
-    <key>UILaunchStoryboardName</key>
-    <string>LaunchScreen</string>
-    
-    <!-- Required for iOS 13+ -->
-    <key>UIUserInterfaceStyle</key>
-    <string>Light</string>
 </dict>
 </plist>
