@@ -1,77 +1,65 @@
-# Uncomment this line to define a global platform for your project
-platform :ios, '12.0'
+# Podfile for Instagram-like iOS Application
+platform :ios, '14.0'
+use_frameworks!
+use_modular_headers!
+inhibit_all_warnings!
 
-CocoaPods analytics sends network stats synchronously affecting flutter build latency.
-ENV['COCOAPODS_DISABLE_STATS'] = 'true'
-
-project 'Runner', {
-  'Debug' => :debug,
-  'Profile' => :release,
-  'Release' => :release,
-}
-
-def flutter_root
-  generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)
-  unless File.exist?(generated_xcode_build_settings_path)
-    raise "#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first"
-  end
-
-  File.foreach(generated_xcode_build_settings_path) do |line|
-    matches = line.match(/FLUTTER_ROOT=(.*)/)
-    return matches[1].strip if matches
-  end
-  raise "FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run flutter pub get"
+# Main App Target
+target 'MyApp' do
+  
+  # Firebase & Google Services
+  pod 'Firebase/Core', '~> 10.0'
+  pod 'Firebase/Auth', '~> 10.0'
+  pod 'Firebase/Firestore', '~> 10.0'
+  pod 'Firebase/Storage', '~> 10.0'
+  pod 'Firebase/Messaging', '~> 10.0'
+  pod 'Firebase/Crashlytics', '~> 10.0'
+  pod 'Firebase/RemoteConfig', '~> 10.0'
+  
+  # Social Media SDKs & Sign-In
+  pod 'FBSDKLoginKit', '~> 16.0'
+  pod 'TwitterKit', '~> 3.4'
+  pod 'TikTokOpenSDK', '~> 5.0'
+  pod 'SnapSDK', '~> 1.8'
+  
+  # UI / UX Enhancements
+  pod 'SDWebImage', '~> 5.15'
+  pod 'Lottie', '~> 4.4'
+  pod 'SkeletonView', '~> 1.30'
+  pod 'IQKeyboardManagerSwift', '~> 6.5'
+  
+  # Networking & APIs
+  pod 'Alamofire', '~> 5.8'
+  pod 'Moya', '~> 15.0'
+  pod 'Socket.IO-Client-Swift', '~> 16.1'
+  
+  # Media & Camera Features
+  pod 'TOCropViewController', '~> 2.6'
+  pod 'GPUImage3', '~> 3.0'
+  pod 'ImagePicker', '~> 5.0'
+  pod 'FFmpegKit', '~> 5.1'
+  
+  # Maps & Location
+  pod 'GoogleMaps', '~> 8.0'
+  pod 'GooglePlaces', '~> 8.0'
+  
+  # Security
+  pod 'KeychainAccess', '~> 4.2'
+  
+  # Others
+  pod 'Branch', '~> 2.0'
+  pod 'RealmSwift', '~> 10.45'
+  pod 'Sentry', '~> 8.20'
+  
 end
 
-require File.expand_path(File.join(flutter_root, 'packages', 'flutter_tools', 'bin', 'podhelper'), __FILE__)
-
-target 'Runner' do
-  use_frameworks! :linkage => :static
-  use_modular_headers!
-
-  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-  
-  # Firebase dependencies
-  pod 'Firebase/Core'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Firestore'
-  pod 'Firebase/Storage'
-  
-  # Additional pods for Instanova features - updated to latest versions
-  pod 'Firebase/Messaging', '10.22.0'
-  pod 'Firebase/Analytics', '10.22.0'
-  pod 'SDWebImage', '> 16.2.0'
-  pod 'FBSDKCoreKit', '~> 16.2.0'
-  pod 'IQKeyboardManagerSwift', '6.5.0'
-  pod 'SVProgressHUD', '2.2.5'
-
-  # Additional recommended pods for social media app
-  pod 'ImagePicker', '> 6.0'
-end
-
+# Post Install Hooks
 post_install do |installer|
   installer.pods_project.targets.each do |target|
-    flutter_additional_ios_build_settings(target)
-
-    # Additional build settings  
-    target.build_configurations.each do |config|  
-      config.build_settings['ENABLE_BITCODE'] = 'NO'  
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'  
-      config.build_settings['SWIFT_VERSION'] = '5.7'  
-      config.build_settings['ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES'] = 'NO'  
-      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'  
-        
-      # Enable new build system and arm64  
-      config.build_settings['ARCHS[sdk=iphonesimulator*]'] = 'arm64 x86_64'  
-        
-      # Fix for Xcode 15+ compatibility  
-      config.build_settings['DEAD_CODE_STRIPPING'] = 'YES'  
-      config.build_settings['GCC_OPTIMIZATION_LEVEL'] = 's'  
+    target.build_configurations.each do |config|
+      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+      config.build_settings['SWIFT_VERSION'] = '5.0'
     end
-  end
-
-  # Fix for Firebase and Flutter compatibility
-  installer.pods_project.build_configurations.each do |config|
-    config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'i386'
   end
 end
