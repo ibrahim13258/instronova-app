@@ -1,11 +1,39 @@
-include ':app'
+// Settings configuration for InstaPhoto Android application
+pluginManagement {
+    // Configure plugin repositories
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 
-def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
-def properties = new Properties()
+// Dependency resolution management
+dependencyResolutionManagement {
+    // Strict repository mode
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    
+    // Configure dependency repositories
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+}
 
-assert localPropertiesFile.exists()
-localPropertiesFile.withReader("UTF-8") { reader -> properties.load(reader) }
+// Enable experimental feature previews
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
-def flutterSdkPath = properties.getProperty("flutter.sdk")
-assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
-apply from: "$flutterSdkPath/packages/flutter_tools/gradle/app_plugin_loader.gradle"
+// Root project name
+rootProject.name = "InstaPhoto"
+
+// Include all application modules
+include(":app")
+include(":core")
+include(":feature-feed")
+include(":feature-chat")
+include(":feature-profile")
+include(":feature-reels")
+include(":feature-stories")
+include(":feature-maps")
