@@ -1,107 +1,76 @@
+import 'dart:convert';
+
+/// Ultra-advanced Instagram-level User model
 class User {
-  // Basic Info
-  final String id;
-  final String name;
-  final String username;
-  final String email;
-  final String profileImageUrl;
-  final String? bio;
-  final String? gender;
-  final DateTime joinedDate;
-
-  // Authentication & Security
-  final bool isVerified;
-  final bool twoFactorEnabled;
-  final List<String> loginMethods; // e.g., ['email', 'google', 'facebook']
-  final String? passwordHash;
-
-  // Social Info
-  final int postCount;
-  final int followerCount;
-  final int followingCount;
-  final List<String>? followersList; // user IDs
-  final List<String>? followingList; // user IDs
-  final List<String>? followRequests; // user IDs
-  final bool isPrivate;
-  final List<String>? blockedUsers;
-  final List<String>? mutedUsers;
-
-  // Content References
-  final List<String>? postIds;
-  final List<String>? reelIds;
-  final List<String>? storyIds;
-  final List<String>? savedPosts; // bookmarked post IDs
-  final List<String>? recentlyViewedStories;
-
-  // Privacy & Settings
-  final bool allowTagging;
-  final bool allowMentions;
-  final String accountType; // personal / creator / business
-  final bool notificationsEnabled;
-  final bool darkMode;
-  final String? languagePreference;
-
-  // Analytics (for creator/business accounts)
-  final int profileViews;
-  final int reach;
-  final int impressions;
-  final double engagementRate;
-
-  // Extra Metadata
-  final DateTime? lastActive;
-  final List<String>? deviceInfo; // devices where logged in
+  final String id;                   // Unique user ID
+  final String name;                 // Full name
+  final String username;             // Unique username
+  final String email;                // Email address
+  final String? bio;                 // User bio
+  final String? gender;              // Gender
+  final String? profileImageUrl;     // Profile picture URL
+  final List<String> followers;      // List of user IDs who follow this user
+  final List<String> following;      // List of user IDs this user follows
+  final List<String> savedPostIds;   // List of saved post IDs
+  final List<String> storyIds;       // List of active story IDs
+  final bool isPrivate;              // Private account flag
+  final bool isVerified;             // Verified badge flag
+  final DateTime createdAt;          // Account creation timestamp
 
   User({
-    // Basic Info
     required this.id,
     required this.name,
     required this.username,
     required this.email,
-    required this.profileImageUrl,
     this.bio,
     this.gender,
-    required this.joinedDate,
-
-    // Authentication & Security
-    this.isVerified = false,
-    this.twoFactorEnabled = false,
-    this.loginMethods = const ['email'],
-    this.passwordHash,
-
-    // Social Info
-    this.postCount = 0,
-    this.followerCount = 0,
-    this.followingCount = 0,
-    this.followersList,
-    this.followingList,
-    this.followRequests,
+    this.profileImageUrl,
+    this.followers = const [],
+    this.following = const [],
+    this.savedPostIds = const [],
+    this.storyIds = const [],
     this.isPrivate = false,
-    this.blockedUsers,
-    this.mutedUsers,
-
-    // Content References
-    this.postIds,
-    this.reelIds,
-    this.storyIds,
-    this.savedPosts,
-    this.recentlyViewedStories,
-
-    // Privacy & Settings
-    this.allowTagging = true,
-    this.allowMentions = true,
-    this.accountType = 'personal',
-    this.notificationsEnabled = true,
-    this.darkMode = false,
-    this.languagePreference,
-
-    // Analytics
-    this.profileViews = 0,
-    this.reach = 0,
-    this.impressions = 0,
-    this.engagementRate = 0.0,
-
-    // Extra Metadata
-    this.lastActive,
-    this.deviceInfo,
+    this.isVerified = false,
+    required this.createdAt,
   });
+
+  /// Deserialize JSON to User object
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      username: json['username'] as String,
+      email: json['email'] as String,
+      bio: json['bio'],
+      gender: json['gender'],
+      profileImageUrl: json['profileImageUrl'],
+      followers: List<String>.from(json['followers'] ?? []),
+      following: List<String>.from(json['following'] ?? []),
+      savedPostIds: List<String>.from(json['savedPostIds'] ?? []),
+      storyIds: List<String>.from(json['storyIds'] ?? []),
+      isPrivate: json['isPrivate'] ?? false,
+      isVerified: json['isVerified'] ?? false,
+      createdAt: DateTime.parse(json['createdAt']),
+    );
+  }
+
+  /// Serialize User object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'username': username,
+      'email': email,
+      'bio': bio,
+      'gender': gender,
+      'profileImageUrl': profileImageUrl,
+      'followers': followers,
+      'following': following,
+      'savedPostIds': savedPostIds,
+      'storyIds': storyIds,
+      'isPrivate': isPrivate,
+      'isVerified': isVerified,
+      'createdAt': createdAt.toIso8601String(),
+    };
+  }
 }
