@@ -101,7 +101,7 @@ class _SignupScreenState extends State<SignupScreen> {
       }
 
       if (mounted) {
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacementNamed(context, '/complete_profile');
       }
     } catch (error) {
       if (mounted) {
