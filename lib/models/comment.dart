@@ -1,29 +1,12 @@
-// models/comment.dart
-
-/// Represents a comment on a post
+/// Comment model for Post/Reel/Story
 class Comment {
-  /// Unique comment ID
   final String id;
-
-  /// User ID of the commenter
   final String userId;
-
-  /// Username of the commenter
   final String username;
-
-  /// Profile picture URL of the commenter
   final String userImageUrl;
-
-  /// Text content of the comment
   final String text;
-
-  /// Timestamp of comment creation
   final DateTime createdAt;
-
-  /// Number of likes on the comment
   final int likeCount;
-
-  /// Whether the current user has liked this comment
   final bool isLikedByUser;
 
   Comment({
@@ -37,7 +20,6 @@ class Comment {
     this.isLikedByUser = false,
   });
 
-  /// Deserialize from JSON
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
       id: json['id'] as String,
@@ -51,7 +33,6 @@ class Comment {
     );
   }
 
-  /// Serialize to JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
