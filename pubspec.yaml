@@ -1,6 +1,6 @@
- name: instagram_clone
-description: A social media app like Instagram
-publish_to: 'none' # Remove this line if you want to publish to pub.dev
+name: instagram_clone
+description: A fully featured social media app like Instagram
+publish_to: 'none' # Remove this line to publish to pub.dev
 version: 1.0.0+1
 
 environment:
@@ -25,6 +25,11 @@ dependencies:
   firebase_storage: ^11.3.0
   flutter_local_notifications: ^13.0.1
   branch_io_sdk: ^1.2.3 # optional if using Branch.io
+  flutter_keyboard_visibility: ^5.5.0
+  shimmer: ^3.0.0
+  pull_to_refresh: ^2.0.0
+  animated_text_kit: ^4.2.2
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:
@@ -38,11 +43,13 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/fonts/
+    - assets/posts/          # for demo post images
+    - assets/stories/        # for stories carousel
+    - assets/chat/           # for chat UI images/emojis
 
   fonts:
     - family: Roboto
       fonts:
-        - asset: assets/fonts/Roboto-Regular.ttf
-        - asset: assets/fonts/Roboto-Bold.ttf
-          weight: 700
-
+        - asset: assets/fonts/Roboto-VariableFont_wdth,wght.ttf
+        - asset: assets/fonts/Roboto-Italic-VariableFont_wdth,wght.ttf
+          style: italic
