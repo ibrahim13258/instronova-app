@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // Screens
+import 'screens/splash_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/home_screen.dart';
@@ -20,7 +21,6 @@ import 'providers/post_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(
     MultiProvider(
       providers: [
@@ -49,79 +49,36 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        fontFamily: 'Cursive',
+        fontFamily: 'Roboto', // Instagram-like font
       ),
-      home: const AuthWrapper(),
+      home: const SplashScreen(), // Show splash first
       routes: {
-        '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const SignupScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/profile': (context) => const ProfileScreen(),
-        '/search': (context) => const SearchScreen(),
-        '/reels': (context) => const ReelsScreen(),
-        '/messages': (context) => const MessagesScreen(),
-        '/settings': (context) => const SettingsScreen(),
+        '/login': (_) => const LoginScreen(),
+        '/signup': (_) => const SignupScreen(),
+        '/home': (_) => const HomeScreen(),
+        '/profile': (_) => const ProfileScreen(),
+        '/search': (_) => const SearchScreen(),
+        '/reels': (_) => const ReelsScreen(),
+        '/messages': (_) => const MessagesScreen(),
+        '/settings': (_) => const SettingsScreen(),
       },
     );
   }
 }
 
-// Auth wrapper to handle auth state & permissions
-class AuthWrapper extends StatefulWidget {
-  const AuthWrapper({super.key});
-
-  @override
-  State<AuthWrapper> createState() => _AuthWrapperState();
-}
-
-class _AuthWrapperState extends State<AuthWrapper> {
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeApp();
-  }
-
-  Future<void> _initializeApp() async {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    await authProvider.checkAuthState();
-
-    // Request essential permissions
-    await _requestPermissions();
-
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-  Future<void> _requestPermissions() async {
+// Permission Utility
+class AppPermissions {
+  static Future<void> requestAllPermissions() async {
     final permissions = [
       Permission.camera,
       Permission.microphone,
       Permission.storage,
       Permission.photos,
     ];
-
     for (var permission in permissions) {
       if (!(await permission.isGranted)) {
         await permission.request();
       }
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-
-    if (_isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    return authProvider.isAuthenticated
-        ? const HomeScreen()
-        : const LoginScreen();
   }
 }
