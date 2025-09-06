@@ -1,0 +1,34 @@
+<svg width="300" height="500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Search Bar -->
+  <rect x="10" y="10" width="280" height="40" rx="8" fill="#f0f0f0" stroke="#ccc" stroke-width="1"/>
+  <text x="20" y="35" font-family="Arial" font-size="14" fill="#888">Search</text>
+  
+  <!-- Tabs: Top, Accounts, Tags, Places -->
+  <rect x="10" y="60" width="60" height="30" rx="5" fill="#e0e0e0"/>
+  <text x="20" y="80" font-family="Arial" font-size="12" fill="#555">Top</text>
+  
+  <rect x="75" y="60" width="70" height="30" rx="5" fill="#f0f0f0"/>
+  <text x="85" y="80" font-family="Arial" font-size="12" fill="#555">Accounts</text>
+  
+  <rect x="150" y="60" width="50" height="30" rx="5" fill="#f0f0f0"/>
+  <text x="155" y="80" font-family="Arial" font-size="12" fill="#555">Tags</text>
+  
+  <rect x="205" y="60" width="85" height="30" rx="5" fill="#f0f0f0"/>
+  <text x="210" y="80" font-family="Arial" font-size="12" fill="#555">Places</text>
+  
+  <!-- Grid of thumbnails -->
+  <!-- Row 1 -->
+  <rect x="10" y="100" width="90" height="90" rx="8" fill="#ddd"/>
+  <rect x="105" y="100" width="90" height="90" rx="8" fill="#ddd"/>
+  <rect x="200" y="100" width="90" height="90" rx="8" fill="#ddd"/>
+  
+  <!-- Row 2 -->
+  <rect x="10" y="195" width="90" height="90" rx="8" fill="#ddd"/>
+  <rect x="105" y="195" width="90" height="90" rx="8" fill="#ddd"/>
+  <rect x="200" y="195" width="90" height="90" rx="8" fill="#ddd"/>
+  
+  <!-- Row 3 -->
+  <rect x="10" y="290" width="90" height="90" rx="8" fill="#ddd"/>
+  <rect x="105" y="290" width="90" height="90" rx="8" fill="#ddd"/>
+  <rect x="200" y="290" width="90" height="90" rx="8" fill="#ddd"/>
+</svg>
