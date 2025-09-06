@@ -1,0 +1,17 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 64 64"
+    width="64"
+    height="64"
+>
+  <!-- Chat bubble -->
+  <path
+    d="M32 4C16 4 4 16 4 32c0 8 4 15 10 20v8l10-6h8c16 0 28-12 28-28S48 4 32 4z"
+    fill="#ffffff"
+  />
+  <!-- Lightning bolt for messenger -->
+  <polygon
+    points="26,20 34,20 28,34 36,34 26,44 30,34 22,34"
+    fill="#000000"
+  />
+</svg>
