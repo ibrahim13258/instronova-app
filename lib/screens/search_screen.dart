@@ -36,16 +36,22 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _buildTrendingTags() {
     return SizedBox(
-      height: 40,
+      height: 50,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: trendingTags.length,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: Chip(
-              label: Text(trendingTags[index]),
-              backgroundColor: Colors.blue.shade100,
+            child: ActionChip(
+              label: Text(trendingTags[index],
+                  style: const TextStyle(color: Colors.white)),
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                _searchController.text = trendingTags[index].replaceAll('#', '');
+                _filterUsers();
+              },
             ),
           );
         },
@@ -56,9 +62,12 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _buildUserResult(String username) {
     return ListTile(
       leading: CircleAvatar(
-        child: Text(username[0].toUpperCase()),
+        radius: 24,
+        backgroundColor: Colors.blue.shade100,
+        child: Text(username[0].toUpperCase(), style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
-      title: Text(username),
+      title: Text(username, style: const TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: Text('Bio of $username', style: TextStyle(color: Colors.grey.shade600)),
       onTap: () {},
     );
   }
@@ -70,13 +79,19 @@ class _SearchScreenState extends State<SearchScreen> {
       itemCount: 12,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        mainAxisSpacing: 2,
-        crossAxisSpacing: 2,
+        mainAxisSpacing: 4,
+        crossAxisSpacing: 4,
       ),
       itemBuilder: (context, index) {
-        return Container(
-          color: Colors.grey.shade300,
-          child: Center(child: Text('Post ${index + 1}')),
+        return GestureDetector(
+          onTap: () {},
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(child: Text('Post ${index + 1}')),
+          ),
         );
       },
     );
@@ -86,28 +101,36 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-          controller: _searchController,
-          decoration: const InputDecoration(
-            hintText: 'Search',
-            border: InputBorder.none,
-            prefixIcon: Icon(Icons.search),
+        title: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: TextField(
+            controller: _searchController,
+            decoration: const InputDecoration(
+              hintText: 'Search',
+              border: InputBorder.none,
+              prefixIcon: Icon(Icons.search, color: Colors.grey),
+            ),
           ),
         ),
+        backgroundColor: Colors.white,
+        elevation: 1,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             _buildTrendingTags(),
-            const Divider(),
+            const SizedBox(height: 8),
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: filteredUsers.length,
               itemBuilder: (context, index) => _buildUserResult(filteredUsers[index]),
             ),
-            const Divider(),
+            const SizedBox(height: 8),
             _buildPostGrid(),
           ],
         ),
