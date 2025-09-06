@@ -24,7 +24,7 @@ dependencies:
   cloud_firestore: ^5.9.0
   firebase_storage: ^11.3.0
   flutter_local_notifications: ^13.0.1
-  branch_io_sdk: ^1.2.3 # optional if using Branch.io
+  branch_io_sdk: ^1.2.3
   flutter_keyboard_visibility: ^5.5.0
   shimmer: ^3.0.0
   pull_to_refresh: ^2.0.0
@@ -40,12 +40,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
     - assets/icons/
-    - assets/fonts/
-    - assets/posts/          # for demo post images
-    - assets/stories/        # for stories carousel
-    - assets/chat/           # for chat UI images/emojis
 
   fonts:
     - family: Roboto
