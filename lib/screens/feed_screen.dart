@@ -1,6 +1,5 @@
 // File: screens/feed_screen.dart
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../widgets/feed_post_item.dart';
 import '../widgets/story_list.dart';
 
@@ -29,18 +28,20 @@ class _FeedScreenState extends State<FeedScreen> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent &&
-          !isLoadingMore) {
-        _loadMorePosts();
-      }
-    });
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 100 &&
+        !isLoadingMore) {
+      _loadMorePosts();
+    }
   }
 
   Future<void> _loadMorePosts() async {
     setState(() => isLoadingMore = true);
-    await Future.delayed(const Duration(seconds: 2)); // simulate API call
+    await Future.delayed(const Duration(seconds: 2));
     List<Map<String, dynamic>> newPosts = List.generate(
       5,
       (index) => {
@@ -60,7 +61,7 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 
   Future<void> _refreshPosts() async {
-    await Future.delayed(const Duration(seconds: 1)); // simulate API call
+    await Future.delayed(const Duration(seconds: 1));
     setState(() {
       posts = List.generate(
         10,
@@ -79,20 +80,22 @@ class _FeedScreenState extends State<FeedScreen> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: _refreshPosts,
-      child: SingleChildScrollView(
+      child: ListView.builder(
         controller: _scrollController,
-        child: Column(
-          children: [
-            const StoryList(),
-            const Divider(),
-            ...posts.map((post) => FeedPostItem(post: post)).toList(),
-            if (isLoadingMore)
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: CircularProgressIndicator(),
-              ),
-          ],
-        ),
+        itemCount: posts.length + 2, // +1 for stories, +1 for loading
+        itemBuilder: (context, index) {
+          if (index == 0) return const StoryList();
+          if (index == posts.length + 1) {
+            return isLoadingMore
+                ? const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                : const SizedBox.shrink();
+          }
+          final post = posts[index - 1];
+          return FeedPostItem(post: post);
+        },
       ),
     );
   }
