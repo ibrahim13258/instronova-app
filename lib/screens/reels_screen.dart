@@ -13,8 +13,15 @@ class _ReelsScreenState extends State<ReelsScreen> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
 
-  final List<String> reelVideos = List.generate(
-      5, (index) => "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_$index.mp4");
+  final List<Map<String, dynamic>> reelVideos = List.generate(
+    5,
+    (index) => {
+      "url": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_$index.mp4",
+      "username": "user$index",
+      "caption": "This is reel $index",
+      "likes": 10 * (index + 1),
+    },
+  );
 
   final Map<int, VideoPlayerController> _videoControllers = {};
 
@@ -26,7 +33,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
 
   void _initializeVideo(int index) {
     if (!_videoControllers.containsKey(index)) {
-      final controller = VideoPlayerController.network(reelVideos[index])
+      final controller = VideoPlayerController.network(reelVideos[index]["url"])
         ..initialize().then((_) {
           setState(() {});
           controller.play();
@@ -66,6 +73,8 @@ class _ReelsScreenState extends State<ReelsScreen> {
       },
       itemBuilder: (context, index) {
         final controller = _videoControllers[index];
+        final reel = reelVideos[index];
+
         return controller != null && controller.value.isInitialized
             ? Stack(
                 children: [
@@ -79,6 +88,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
                       ),
                     ),
                   ),
+                  // Right side action buttons
                   Positioned(
                     right: 16,
                     bottom: 32,
@@ -101,6 +111,7 @@ class _ReelsScreenState extends State<ReelsScreen> {
                       ],
                     ),
                   ),
+                  // Top progress bar
                   Positioned(
                     top: 16,
                     left: 16,
@@ -110,6 +121,30 @@ class _ReelsScreenState extends State<ReelsScreen> {
                           controller.value.duration.inSeconds,
                       backgroundColor: Colors.white24,
                       valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  ),
+                  // Bottom caption & username
+                  Positioned(
+                    left: 16,
+                    bottom: 48,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "@${reel["username"]}",
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          reel["caption"],
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "${reel["likes"]} likes",
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
                 ],
