@@ -8,6 +8,7 @@ import '../screens/reels_screen.dart';
 import '../screens/search_screen.dart';
 import '../screens/notifications_screen.dart';
 import '../screens/profile_screen.dart';
+import '../constants/app_assets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,15 +17,15 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    FeedScreen(), // Feed Screen showing posts
-    ReelsScreen(), // Reels
-    SearchScreen(), // Search
-    NotificationsScreen(), // Notifications
-    ProfileScreen(), // User Profile
+    FeedScreen(),        // Feed
+    ReelsScreen(),       // Reels
+    SearchScreen(),      // Search
+    NotificationsScreen(),// Notifications
+    ProfileScreen(),     // Profile
   ];
 
   void _onTabTapped(int index) {
@@ -39,23 +40,27 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Instagram HVp',
-          style: TextStyle(fontFamily: 'Billabong', fontSize: 28),
-        ),
         backgroundColor: isDark ? Colors.black : Colors.white,
         elevation: 0,
+        centerTitle: true,
+        title: Image.asset(
+          AppAssets.logo,
+          height: 35,
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_box_outlined),
+            icon: Icon(Icons.add_box_outlined,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () => Get.toNamed('/add_post'),
           ),
           IconButton(
-            icon: const Icon(Icons.favorite_border),
+            icon: Icon(Icons.favorite_border,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () => Get.toNamed('/notifications'),
           ),
           IconButton(
-            icon: const Icon(Icons.send),
+            icon: Icon(Icons.send,
+                color: isDark ? Colors.white : Colors.black),
             onPressed: () => Get.toNamed('/chat_list'),
           ),
         ],
@@ -72,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// FeedScreen widget (can also be a separate file for modularity)
+// FeedScreen widget
 class FeedScreen extends StatelessWidget {
   FeedScreen({Key? key}) : super(key: key);
 
@@ -92,8 +97,8 @@ class FeedScreen extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          StoryList(), // Top stories carousel
-          const Divider(),
+          StoryList(), // Stories carousel
+          const Divider(height: 1),
           ...dummyPosts.map((post) => FeedPostItem(post: post)).toList(),
         ],
       ),
