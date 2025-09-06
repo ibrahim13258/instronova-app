@@ -8,6 +8,7 @@ import '../screens/reels_screen.dart';
 import '../screens/search_screen.dart';
 import '../screens/notifications_screen.dart';
 import '../screens/profile_screen.dart';
+import '../screens/messages_screen.dart'; // DM screen
 import '../constants/app_assets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,11 +22,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    FeedScreen(),        // Feed
-    ReelsScreen(),       // Reels
-    SearchScreen(),      // Search
+    FeedScreen(),         // Feed
+    ReelsScreen(),        // Reels
+    SearchScreen(),       // Search
     NotificationsScreen(),// Notifications
-    ProfileScreen(),     // Profile
+    MessagesScreen(),     // Messages/DM
+    ProfileScreen(),      // Profile
   ];
 
   void _onTabTapped(int index) {
@@ -72,6 +74,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       bottomNavigationBar: CustomBottomNavbar(
         selectedIndex: _selectedIndex,
         onTap: _onTabTapped,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.video_library), label: 'Reels'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+          BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: 'Notifications'),
+          BottomNavigationBarItem(icon: Icon(Icons.message_outlined), label: 'Messages'), // New DM tab
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
+        ],
       ),
     );
   }
