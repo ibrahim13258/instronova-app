@@ -16,11 +16,13 @@ class CustomBottomNavbar extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
 
+    // Updated icons list with Messages icon
     final List<String> icons = [
       AppAssets.homeIcon,
       AppAssets.reelsIcon,
       AppAssets.searchIcon,
       AppAssets.notificationsIcon,
+      AppAssets.messagesIcon, // Added DM icon
       AppAssets.profileIcon,
     ];
 
