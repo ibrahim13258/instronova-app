@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class ApiHelper {
   // Base URL of your API
-  static const String baseUrl = 'https://api.yourapp.com';
+  static const String baseUrl = 'https://api.instronova.in/v1';
 
   // Generic GET request
   static Future<Map<String, dynamic>> getRequest(String endpoint) async {
