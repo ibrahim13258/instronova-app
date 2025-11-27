@@ -53,17 +53,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           IconButton(
             icon: Icon(Icons.add_box_outlined,
                 color: isDark ? Colors.white : Colors.black),
-// TODO: Replace GetX navigation: onPressed: () => Get.toNamed('/add_post'),
+            onPressed: () => Get.toNamed('/add_post'),
           ),
           IconButton(
             icon: Icon(Icons.favorite_border,
                 color: isDark ? Colors.white : Colors.black),
-// TODO: Replace GetX navigation: onPressed: () => Get.toNamed('/notifications'),
+            onPressed: () => Get.toNamed('/notifications'),
           ),
           IconButton(
             icon: Icon(Icons.send,
                 color: isDark ? Colors.white : Colors.black),
-// TODO: Replace GetX navigation: onPressed: () => Get.toNamed('/chat_list'),
+            onPressed: () => Get.toNamed('/chat_list'),
           ),
         ],
       ),

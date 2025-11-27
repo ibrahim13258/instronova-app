@@ -40,11 +40,11 @@ class _SplashScreenState extends State<SplashScreen>
 
     // Delay and navigate based on auth state
     Timer(const Duration(seconds: 3), () {
-// TODO: Replace GetX navigation: final authProvider = Get.find<AuthProvider>();
+      final authProvider = Get.find<AuthProvider>();
       if (authProvider.isAuthenticated) {
-// TODO: Replace GetX navigation: Get.offAllNamed(AppRoutes.home);
+        Get.offAllNamed(AppRoutes.home);
       } else {
-// TODO: Replace GetX navigation: Get.offAllNamed(AppRoutes.login);
+        Get.offAllNamed(AppRoutes.login);
       }
     });
   }

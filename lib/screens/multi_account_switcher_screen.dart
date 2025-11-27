@@ -24,8 +24,8 @@ class _MultiAccountSwitcherScreenState
     setState(() {
       currentUsername = username;
     });
-// TODO: Replace GetX navigation: Get.back(); // Close the switcher after selection
-// TODO: Replace GetX navigation: Get.snackbar(
+    Get.back(); // Close the switcher after selection
+    Get.snackbar(
       "Switched Account",
       "You are now logged in as $username",
       snackPosition: SnackPosition.BOTTOM,
@@ -83,7 +83,7 @@ class _MultiAccountSwitcherScreenState
               label: const Text("Add Account"),
               onPressed: () {
                 // Navigate to login/signup flow for new account
-// TODO: Replace GetX navigation: Get.toNamed('/login');
+                Get.toNamed('/login');
               },
               style: ElevatedButton.styleFrom(
                 padding:
