@@ -1,7 +1,7 @@
  import 'package:flutter/material.dart';
 import 'package:uni_links/uni_links.dart';
 import 'dart:async';
-// GetX removed for Provider consistency
+import 'package:get/get.dart';
 import '../constants/app_routes.dart';
 
 class DeepLinkHandler {
@@ -46,11 +46,11 @@ class DeepLinkHandler {
     // Example: myapp://profile/123
     if (path.startsWith('/profile/')) {
       final userId = path.replaceFirst('/profile/', '');
-      Get.toNamed(AppRoutes.profile, arguments: {'userId': userId});
+// TODO: Replace GetX navigation: Get.toNamed(AppRoutes.profile, arguments: {'userId': userId});
     } else if (path == '/home') {
-      Get.toNamed(AppRoutes.home);
+// TODO: Replace GetX navigation: Get.toNamed(AppRoutes.home);
     } else if (path == '/login') {
-      Get.toNamed(AppRoutes.login);
+// TODO: Replace GetX navigation: Get.toNamed(AppRoutes.login);
     } else {
       debugPrint("Unhandled deep link: $uri");
     }
@@ -61,4 +61,3 @@ class DeepLinkHandler {
     _sub?.cancel();
   }
 }
-
