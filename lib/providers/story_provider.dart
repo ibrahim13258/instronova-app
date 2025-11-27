@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import '../models/story_model.dart';
 import '../services/story_service.dart';
 
