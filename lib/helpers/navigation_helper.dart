@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// GetX removed for Provider consistency
+import 'package:get/get.dart';
 
 class NavigationHelper {
   /// Push to new screen
