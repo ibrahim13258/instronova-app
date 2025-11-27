@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

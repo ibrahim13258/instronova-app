@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import 'package:dio/dio.dart';
 import '../models/chat_model.dart';
 import '../models/message_model.dart';

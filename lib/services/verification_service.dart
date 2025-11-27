@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import 'package:http/http.dart' as http;
 import '../models/user_model.dart';
 
