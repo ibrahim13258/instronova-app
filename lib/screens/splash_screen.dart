@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import '../constants/app_assets.dart';
 import '../routes/app_routes.dart';
 import '../providers/auth_provider.dart';
@@ -40,12 +40,15 @@ class _SplashScreenState extends State<SplashScreen>
 
     // Delay and navigate based on auth state
     Timer(const Duration(seconds: 3), () {
-      final authProvider = Get.find<AuthProvider>();
-      if (authProvider.isAuthenticated) {
-        Get.offAllNamed(AppRoutes.home);
-      } else {
-        Get.offAllNamed(AppRoutes.login);
-      }
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: final authProvider = Get.find<AuthProvider>();      if (authProvider.isAuthenticated) {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: Get.offAllNamed(AppRoutes.home);      } else {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: Get.offAllNamed(AppRoutes.login);      }
     });
   }
 
