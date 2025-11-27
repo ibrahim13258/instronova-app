@@ -1,6 +1,6 @@
 // File: screens/home_screen.dart
 import 'package:flutter/material.dart';
-// GetX removed for Provider consistency
+import 'package:get/get.dart';
 import '../widgets/story_list.dart';
 import '../widgets/feed_post_item.dart';
 import '../widgets/custom_bottom_navbar.dart';
@@ -53,17 +53,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           IconButton(
             icon: Icon(Icons.add_box_outlined,
                 color: isDark ? Colors.white : Colors.black),
-            onPressed: () => Get.toNamed('/add_post'),
+// TODO: Replace GetX navigation: onPressed: () => Get.toNamed('/add_post'),
           ),
           IconButton(
             icon: Icon(Icons.favorite_border,
                 color: isDark ? Colors.white : Colors.black),
-            onPressed: () => Get.toNamed('/notifications'),
+// TODO: Replace GetX navigation: onPressed: () => Get.toNamed('/notifications'),
           ),
           IconButton(
             icon: Icon(Icons.send,
                 color: isDark ? Colors.white : Colors.black),
-            onPressed: () => Get.toNamed('/chat_list'),
+// TODO: Replace GetX navigation: onPressed: () => Get.toNamed('/chat_list'),
           ),
         ],
       ),

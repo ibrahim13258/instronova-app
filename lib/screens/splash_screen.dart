@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-// GetX removed for Provider consistency
+import 'package:get/get.dart';
 import '../constants/app_assets.dart';
 import '../routes/app_routes.dart';
 import '../providers/auth_provider.dart';
@@ -40,11 +40,11 @@ class _SplashScreenState extends State<SplashScreen>
 
     // Delay and navigate based on auth state
     Timer(const Duration(seconds: 3), () {
-      final authProvider = Get.find<AuthProvider>();
+// TODO: Replace GetX navigation: final authProvider = Get.find<AuthProvider>();
       if (authProvider.isAuthenticated) {
-        Get.offAllNamed(AppRoutes.home);
+// TODO: Replace GetX navigation: Get.offAllNamed(AppRoutes.home);
       } else {
-        Get.offAllNamed(AppRoutes.login);
+// TODO: Replace GetX navigation: Get.offAllNamed(AppRoutes.login);
       }
     });
   }

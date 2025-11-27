@@ -1,6 +1,6 @@
 // File: screens/multi_account_switcher_screen.dart
 import 'package:flutter/material.dart';
-// GetX removed for Provider consistency
+import 'package:get/get.dart';
 
 class MultiAccountSwitcherScreen extends StatefulWidget {
   const MultiAccountSwitcherScreen({Key? key}) : super(key: key);
@@ -24,8 +24,8 @@ class _MultiAccountSwitcherScreenState
     setState(() {
       currentUsername = username;
     });
-    Get.back(); // Close the switcher after selection
-    Get.snackbar(
+// TODO: Replace GetX navigation: Get.back(); // Close the switcher after selection
+// TODO: Replace GetX navigation: Get.snackbar(
       "Switched Account",
       "You are now logged in as $username",
       snackPosition: SnackPosition.BOTTOM,
@@ -83,7 +83,7 @@ class _MultiAccountSwitcherScreenState
               label: const Text("Add Account"),
               onPressed: () {
                 // Navigate to login/signup flow for new account
-                Get.toNamed('/login');
+// TODO: Replace GetX navigation: Get.toNamed('/login');
               },
               style: ElevatedButton.styleFrom(
                 padding:
