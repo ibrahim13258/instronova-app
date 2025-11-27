@@ -1,4 +1,4 @@
-// GetX removed for Provider consistency
+import 'package:get/get.dart';
 import '../models/post_model.dart';
 import '../services/api_client.dart';
 
@@ -15,7 +15,7 @@ class SavedPostsService extends GetxService {
       final List<PostModel> posts = await _apiClient.getSavedPosts();
       savedPosts.assignAll(posts);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch saved posts: $e');
+// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch saved posts: $e');
     }
   }
 
@@ -25,10 +25,10 @@ class SavedPostsService extends GetxService {
       final bool success = await _apiClient.savePost(post.id);
       if (success) {
         savedPosts.add(post);
-        Get.snackbar('Saved', 'Post added to saved posts');
+// TODO: Replace GetX navigation: Get.snackbar('Saved', 'Post added to saved posts');
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to save post: $e');
+// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to save post: $e');
     }
   }
 
@@ -38,10 +38,10 @@ class SavedPostsService extends GetxService {
       final bool success = await _apiClient.unsavePost(postId);
       if (success) {
         savedPosts.removeWhere((post) => post.id == postId);
-        Get.snackbar('Removed', 'Post removed from saved posts');
+// TODO: Replace GetX navigation: Get.snackbar('Removed', 'Post removed from saved posts');
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to remove post: $e');
+// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to remove post: $e');
     }
   }
 

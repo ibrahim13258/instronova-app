@@ -1,4 +1,5 @@
-// GetX removed for Provider consistency
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import '../models/post_model.dart';
 import '../models/comment_model.dart';
@@ -23,7 +24,7 @@ class PostService extends GetxService {
           .map((json) => PostModel.fromJson(json))
           .toList();
     } catch (e) {
-      print("Error fetching feed: $e");
+      debugPrint("Error fetching feed: $e");
     }
   }
 
@@ -36,7 +37,7 @@ class PostService extends GetxService {
       );
       _feedPosts.insert(0, PostModel.fromJson(response.data)); // add to top of feed
     } catch (e) {
-      print("Error adding post: $e");
+      debugPrint("Error adding post: $e");
     }
   }
 
@@ -47,7 +48,7 @@ class PostService extends GetxService {
       _postDetail.value = PostModel.fromJson(response.data);
       await fetchComments(postId); // load comments for post
     } catch (e) {
-      print("Error fetching post detail: $e");
+      debugPrint("Error fetching post detail: $e");
     }
   }
 
@@ -59,7 +60,7 @@ class PostService extends GetxService {
           .map((json) => CommentModel.fromJson(json))
           .toList();
     } catch (e) {
-      print("Error fetching comments: $e");
+      debugPrint("Error fetching comments: $e");
     }
   }
 
@@ -72,7 +73,7 @@ class PostService extends GetxService {
       );
       _comments.add(CommentModel.fromJson(response.data));
     } catch (e) {
-      print("Error adding comment: $e");
+      debugPrint("Error adding comment: $e");
     }
   }
 
@@ -82,7 +83,7 @@ class PostService extends GetxService {
       await _dio.post('https://api.example.com/posts/$postId/like');
       await fetchPostDetail(postId); // refresh post detail
     } catch (e) {
-      print("Error liking post: $e");
+      debugPrint("Error liking post: $e");
     }
   }
 
@@ -92,7 +93,7 @@ class PostService extends GetxService {
       await _dio.post('https://api.example.com/posts/$postId/unlike');
       await fetchPostDetail(postId); // refresh post detail
     } catch (e) {
-      print("Error unliking post: $e");
+      debugPrint("Error unliking post: $e");
     }
   }
 }

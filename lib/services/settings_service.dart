@@ -1,4 +1,5 @@
-// GetX removed for Provider consistency
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 
 // Model for settings
@@ -33,7 +34,7 @@ class SettingsModel {
 }
 
 class SettingsService extends GetxService {
-  static SettingsService get to => Get.find();
+// TODO: Replace GetX navigation: static SettingsService get to => Get.find();
 
   final Dio _dio = Dio();
   final Rx<SettingsModel> _settings = SettingsModel(
@@ -52,7 +53,7 @@ class SettingsService extends GetxService {
       final response = await _dio.get('https://api.yourapp.com/settings');
       _settings.value = SettingsModel.fromJson(response.data);
     } catch (e) {
-      print('Error fetching settings: $e');
+      debugPrint('Error fetching settings: $e');
     }
   }
 
@@ -70,7 +71,7 @@ class SettingsService extends GetxService {
         }
       });
     } catch (e) {
-      print('Error updating account: $e');
+      debugPrint('Error updating account: $e');
     }
   }
 
@@ -85,7 +86,7 @@ class SettingsService extends GetxService {
         if (val != null) val.isPrivate = isPrivate;
       });
     } catch (e) {
-      print('Error updating privacy: $e');
+      debugPrint('Error updating privacy: $e');
     }
   }
 
@@ -100,7 +101,7 @@ class SettingsService extends GetxService {
         if (val != null) val.twoFactorEnabled = twoFactorEnabled;
       });
     } catch (e) {
-      print('Error updating security: $e');
+      debugPrint('Error updating security: $e');
     }
   }
 }

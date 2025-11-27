@@ -1,4 +1,5 @@
-// GetX removed for Provider consistency
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import '../models/user_model.dart';
 import '../models/post_model.dart';
@@ -28,7 +29,7 @@ class SearchService extends GetxService {
           .toList();
       _addToRecentSearches(query);
     } catch (e) {
-      print("Error searching users: $e");
+      debugPrint("Error searching users: $e");
     }
   }
 
@@ -43,7 +44,7 @@ class SearchService extends GetxService {
           .toList();
       _addToRecentSearches(query);
     } catch (e) {
-      print("Error searching posts: $e");
+      debugPrint("Error searching posts: $e");
     }
   }
 
@@ -53,7 +54,7 @@ class SearchService extends GetxService {
       Response response = await _dio.get('https://api.example.com/search/trending_hashtags');
       _trendingHashtags.value = List<String>.from(response.data);
     } catch (e) {
-      print("Error fetching trending hashtags: $e");
+      debugPrint("Error fetching trending hashtags: $e");
     }
   }
 

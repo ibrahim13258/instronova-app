@@ -1,4 +1,5 @@
-// GetX removed for Provider consistency
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import '../models/notification_model.dart';
 
@@ -17,7 +18,7 @@ class NotificationService extends GetxService {
           .map((json) => NotificationModel.fromJson(json))
           .toList();
     } catch (e) {
-      print("Error fetching notifications: $e");
+      debugPrint("Error fetching notifications: $e");
     }
   }
 
@@ -31,7 +32,7 @@ class NotificationService extends GetxService {
         _notifications.refresh();
       }
     } catch (e) {
-      print("Error marking notification as read: $e");
+      debugPrint("Error marking notification as read: $e");
     }
   }
 
@@ -44,7 +45,7 @@ class NotificationService extends GetxService {
       }
       _notifications.refresh();
     } catch (e) {
-      print("Error marking all notifications as read: $e");
+      debugPrint("Error marking all notifications as read: $e");
     }
   }
 

@@ -1,9 +1,9 @@
-// GetX removed for Provider consistency
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class HelpService extends GetxService {
-  static HelpService get to => Get.find();
+// TODO: Replace GetX navigation: static HelpService get to => Get.find();
 
   // Observables for state
   var isLoading = false.obs;

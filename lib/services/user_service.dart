@@ -1,4 +1,5 @@
-// GetX removed for Provider consistency
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import '../models/user_model.dart';
 
@@ -19,7 +20,7 @@ class UserService extends GetxService {
       Response response = await _dio.get('https://api.example.com/users/$userId');
       _user.value = UserModel.fromJson(response.data);
     } catch (e) {
-      print("Error fetching profile: $e");
+      debugPrint("Error fetching profile: $e");
     }
   }
 
@@ -32,7 +33,7 @@ class UserService extends GetxService {
       );
       _user.value = UserModel.fromJson(response.data);
     } catch (e) {
-      print("Error updating profile: $e");
+      debugPrint("Error updating profile: $e");
     }
   }
 
@@ -44,7 +45,7 @@ class UserService extends GetxService {
           .map((json) => UserModel.fromJson(json))
           .toList();
     } catch (e) {
-      print("Error fetching followers: $e");
+      debugPrint("Error fetching followers: $e");
     }
   }
 
@@ -56,7 +57,7 @@ class UserService extends GetxService {
           .map((json) => UserModel.fromJson(json))
           .toList();
     } catch (e) {
-      print("Error fetching following: $e");
+      debugPrint("Error fetching following: $e");
     }
   }
 
@@ -66,7 +67,7 @@ class UserService extends GetxService {
       await _dio.post('https://api.example.com/users/$targetUserId/follow');
       await fetchFollowing(_user.value.id!); // refresh following list
     } catch (e) {
-      print("Error following user: $e");
+      debugPrint("Error following user: $e");
     }
   }
 
@@ -76,7 +77,7 @@ class UserService extends GetxService {
       await _dio.post('https://api.example.com/users/$targetUserId/unfollow');
       await fetchFollowing(_user.value.id!); // refresh following list
     } catch (e) {
-      print("Error unfollowing user: $e");
+      debugPrint("Error unfollowing user: $e");
     }
   }
 }

@@ -1,4 +1,5 @@
-// GetX removed for Provider consistency
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import '../models/chat_model.dart';
 import '../models/message_model.dart';
@@ -21,7 +22,7 @@ class ChatService extends GetxService {
           .map((json) => ChatModel.fromJson(json))
           .toList();
     } catch (e) {
-      print("Error fetching chat list: $e");
+      debugPrint("Error fetching chat list: $e");
     }
   }
 
@@ -33,7 +34,7 @@ class ChatService extends GetxService {
           .map((json) => MessageModel.fromJson(json))
           .toList();
     } catch (e) {
-      print("Error fetching messages: $e");
+      debugPrint("Error fetching messages: $e");
     }
   }
 
@@ -47,7 +48,7 @@ class ChatService extends GetxService {
       // Add sent message to local list
       _messages.putIfAbsent(chatId, () => <MessageModel>[]).add(MessageModel.fromJson(response.data));
     } catch (e) {
-      print("Error sending message: $e");
+      debugPrint("Error sending message: $e");
     }
   }
 

@@ -1,4 +1,5 @@
-// GetX removed for Provider consistency
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import '../models/story_model.dart';
 
@@ -17,7 +18,7 @@ class StoryService extends GetxService {
           .map((json) => StoryModel.fromJson(json))
           .toList();
     } catch (e) {
-      print("Error fetching stories: $e");
+      debugPrint("Error fetching stories: $e");
     }
   }
 
@@ -34,7 +35,7 @@ class StoryService extends GetxService {
       );
       _stories.add(StoryModel.fromJson(response.data));
     } catch (e) {
-      print("Error uploading story: $e");
+      debugPrint("Error uploading story: $e");
     }
   }
 
@@ -52,7 +53,7 @@ class StoryService extends GetxService {
         _stories.refresh();
       }
     } catch (e) {
-      print("Error marking story viewed: $e");
+      debugPrint("Error marking story viewed: $e");
     }
   }
 
@@ -62,7 +63,7 @@ class StoryService extends GetxService {
       await _dio.delete('https://api.example.com/stories/$storyId');
       _stories.removeWhere((s) => s.id == storyId);
     } catch (e) {
-      print("Error deleting story: $e");
+      debugPrint("Error deleting story: $e");
     }
   }
 }
