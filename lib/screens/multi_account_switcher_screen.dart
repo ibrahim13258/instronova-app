@@ -1,6 +1,6 @@
 // File: screens/multi_account_switcher_screen.dart
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 
 class MultiAccountSwitcherScreen extends StatefulWidget {
   const MultiAccountSwitcherScreen({Key? key}) : super(key: key);

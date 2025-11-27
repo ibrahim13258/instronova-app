@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import '../constants/app_assets.dart';
 import '../routes/app_routes.dart';
 import '../providers/auth_provider.dart';

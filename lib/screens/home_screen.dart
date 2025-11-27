@@ -1,6 +1,6 @@
 // File: screens/home_screen.dart
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import '../widgets/story_list.dart';
 import '../widgets/feed_post_item.dart';
 import '../widgets/custom_bottom_navbar.dart';
