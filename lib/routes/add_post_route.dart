@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import '../screens/add_post_screen.dart';
 
 class AddPostRoute {

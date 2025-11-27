@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 
 // Screens import
 import '../screens/splash_screen.dart';

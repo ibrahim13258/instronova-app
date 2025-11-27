@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import '../screens/story_viewer_screen.dart';
 
 class StoryViewerRoute {

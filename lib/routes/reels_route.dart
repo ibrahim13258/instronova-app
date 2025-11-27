@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import '../screens/reels_screen.dart';
 
 class ReelsRoute {

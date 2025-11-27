@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import '../screens/verification_screen.dart';
 
 class VerificationRoute {
