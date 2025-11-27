@@ -1,4 +1,4 @@
-// GetX removed for Provider consistency
+import 'package:get/get.dart';
 import '../models/notification_model.dart';
 import '../services/notification_service.dart';
 

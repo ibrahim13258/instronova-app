@@ -1,4 +1,4 @@
-// GetX removed for Provider consistency
+import 'package:get/get.dart';
 
 class SettingsProvider extends GetxController {
   // Account settings

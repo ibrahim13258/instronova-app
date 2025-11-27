@@ -1,4 +1,4 @@
-// GetX removed for Provider consistency
+import 'package:get/get.dart';
 import '../models/post_model.dart';
 import '../services/post_service.dart';
 
