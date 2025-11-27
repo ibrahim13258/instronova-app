@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../models/notification_model.dart';
 import '../services/notification_service.dart';
@@ -27,7 +28,7 @@ class NotificationProvider extends GetxController {
       unreadCount.value =
           notifications.where((notif) => !notif.isRead).length;
     } catch (e) {
-      print('Error fetching notifications: $e');
+      debugPrint('Error fetching notifications: $e');
     } finally {
       isLoading.value = false;
     }

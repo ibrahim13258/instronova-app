@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -88,7 +89,7 @@ class AuthProvider with ChangeNotifier {
       await _loadAuthTokens();
       _setupFcmListeners();
     } catch (e) {
-      print('Auth initialization error: $e');
+      debugPrint('Auth initialization error: $e');
     }
   }
 
@@ -124,18 +125,18 @@ class AuthProvider with ChangeNotifier {
   void _handleNewDeviceLogin(Map<String, dynamic> data) {
     // Show notification about new device login
     // This would typically be handled by a notification service
-    print('New device login detected: ${data['deviceInfo']}');
+    debugPrint('New device login detected: ${data['deviceInfo']}');
   }
 
   void _handleSuspiciousActivity(Map<String, dynamic> data) {
     // Handle suspicious activity notification
-    print('Suspicious activity: ${data['activity']}');
+    debugPrint('Suspicious activity: ${data['activity']}');
   }
 
   void _handleMfaCodeNotification(Map<String, dynamic> data) {
     // MFA code received via push notification
     final code = data['code'];
-    print('MFA code received: $code');
+    debugPrint('MFA code received: $code');
   }
 
   void _handleUserStatusChange(Map<String, dynamic> data) {
@@ -170,7 +171,7 @@ class AuthProvider with ChangeNotifier {
         lastSeen: DateTime.now(),
       );
     } catch (e) {
-      print('Failed to update online status: $e');
+      debugPrint('Failed to update online status: $e');
     }
   }
 
@@ -215,7 +216,7 @@ class AuthProvider with ChangeNotifier {
           try {
             await getValidToken();
           } catch (e) {
-            print('Token refresh failed: $e');
+            debugPrint('Token refresh failed: $e');
           }
         });
       }
@@ -346,6 +347,7 @@ class AuthProvider with ChangeNotifier {
       
       _mfaCodeExpiry = DateTime.now().add(Duration(minutes: 10));
     } catch (e) {
+      // TODO: Consider user-friendly error handling
       throw parseError(e);
     } finally {
       _setMfaVerifying(false);
@@ -384,6 +386,7 @@ class AuthProvider with ChangeNotifier {
       _startStatusUpdates();
       
     } catch (e) {
+      // TODO: Consider user-friendly error handling
       throw parseError(e);
     } finally {
       _setMfaVerifying(false);
@@ -402,7 +405,7 @@ class AuthProvider with ChangeNotifier {
         );
       }
     } catch (e) {
-      print('Failed to register FCM token: $e');
+      debugPrint('Failed to register FCM token: $e');
     }
   }
 
@@ -413,6 +416,7 @@ class AuthProvider with ChangeNotifier {
         authToken: await getValidToken(),
       );
     } catch (e) {
+      // TODO: Consider user-friendly error handling
       throw parseError(e);
     }
   }
@@ -425,6 +429,7 @@ class AuthProvider with ChangeNotifier {
         sessionId: sessionId,
       );
     } catch (e) {
+      // TODO: Consider user-friendly error handling
       throw parseError(e);
     }
   }
@@ -437,6 +442,7 @@ class AuthProvider with ChangeNotifier {
         excludeDeviceId: _currentDeviceId,
       );
     } catch (e) {
+      // TODO: Consider user-friendly error handling
       throw parseError(e);
     }
   }
@@ -449,7 +455,7 @@ class AuthProvider with ChangeNotifier {
         targetUserId: userId,
       );
     } catch (e) {
-      print('Failed to subscribe to user status: $e');
+      debugPrint('Failed to subscribe to user status: $e');
     }
   }
 
@@ -461,7 +467,7 @@ class AuthProvider with ChangeNotifier {
         targetUserId: userId,
       );
     } catch (e) {
-      print('Failed to unsubscribe from user status: $e');
+      debugPrint('Failed to unsubscribe from user status: $e');
     }
   }
 
@@ -539,6 +545,7 @@ class AuthProvider with ChangeNotifier {
       
     } catch (e) {
       await _clearAuthTokens();
+      // TODO: Consider user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);
@@ -572,6 +579,7 @@ class AuthProvider with ChangeNotifier {
       
     } catch (e) {
       await _clearAuthTokens();
+      // TODO: Consider user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);
@@ -584,6 +592,7 @@ class AuthProvider with ChangeNotifier {
     try {
       await _apiService.forgotPassword(email);
     } catch (e) {
+      // TODO: Consider user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);
@@ -596,6 +605,7 @@ class AuthProvider with ChangeNotifier {
     try {
       await _apiService.verifyOtp(email, otp);
     } catch (e) {
+      // TODO: Consider user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);
@@ -608,6 +618,7 @@ class AuthProvider with ChangeNotifier {
     try {
       await _apiService.resetPassword(email, otp, newPassword);
     } catch (e) {
+      // TODO: Consider user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);
@@ -629,7 +640,7 @@ class AuthProvider with ChangeNotifier {
             );
           }
         } catch (e) {
-          print('Server logout failed: $e');
+          debugPrint('Server logout failed: $e');
           // Continue with local logout even if server call fails
         }
       }
@@ -639,6 +650,7 @@ class AuthProvider with ChangeNotifier {
       _stopStatusUpdates();
       
     } catch (e) {
+      // TODO: Consider user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);

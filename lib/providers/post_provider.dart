@@ -22,7 +22,7 @@ class PostProvider extends GetxController {
       var posts = await PostService.getFeedPosts();
       feedPosts.assignAll(posts);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load feed');
+// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to load feed');
     } finally {
       isLoadingFeed.value = false;
     }
@@ -35,7 +35,7 @@ class PostProvider extends GetxController {
       PostModel? post = await PostService.getPostDetail(postId);
       selectedPost.value = post;
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load post detail');
+// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to load post detail');
     } finally {
       isLoadingPostDetail.value = false;
     }
@@ -56,7 +56,7 @@ class PostProvider extends GetxController {
       }
       selectedPost.refresh();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update like');
+// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to update like');
     } finally {
       isLikingPost.value = false;
     }
@@ -71,7 +71,7 @@ class PostProvider extends GetxController {
       selectedPost.value!.comments.add(comment);
       selectedPost.refresh();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to add comment');
+// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to add comment');
     } finally {
       isAddingComment.value = false;
     }

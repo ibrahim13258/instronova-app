@@ -29,7 +29,7 @@ class SearchProvider extends GetxController {
       List<UserModel> results = await SearchService.searchUsers(query);
       searchResults.assignAll(results);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch search results: $e');
+// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch search results: $e');
     } finally {
       isLoading.value = false;
     }

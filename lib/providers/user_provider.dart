@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -226,7 +227,7 @@ class UserProvider with ChangeNotifier {
       // Send initial status update
       _updateOnlineStatus(true);
     } catch (e) {
-      print('WebSocket connection failed: $e');
+      debugPrint('WebSocket connection failed: $e');
     }
   }
 
@@ -293,7 +294,7 @@ class UserProvider with ChangeNotifier {
   /// 🔹 Show security notification
   void _showSecurityNotification(String alertType, dynamic details) {
     // Implement notification display logic
-    print('Security alert: $alertType - $details');
+    debugPrint('Security alert: $alertType - $details');
   }
 
   /// 🔹 Handle security notifications from FCM
@@ -355,7 +356,7 @@ class UserProvider with ChangeNotifier {
         body: jsonEncode({'fcmToken': fcmToken}),
       );
     } catch (e) {
-      print('Failed to register FCM token: $e');
+      debugPrint('Failed to register FCM token: $e');
     }
   }
 
@@ -385,7 +386,7 @@ class UserProvider with ChangeNotifier {
   /// 🔹 Trigger rate limiting
   void _triggerRateLimiting() {
     // Implement rate limiting logic
-    print('Rate limiting triggered due to multiple failed login attempts');
+    debugPrint('Rate limiting triggered due to multiple failed login attempts');
   }
 
   /// 🔹 Send suspicious activity alert
@@ -526,7 +527,7 @@ class UserProvider with ChangeNotifier {
           headers: {'Authorization': 'Bearer $_token'},
         );
       } catch (e) {
-        print('Logout API call failed: $e');
+        debugPrint('Logout API call failed: $e');
       }
     }
 
