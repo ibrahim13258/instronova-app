@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 /// Configuration
 class AppConfig {
+  // TODO: align with ApiEndpoints if this class is still used.
   static const String baseUrl = "https://api.instronova.in/v1/auth";
 }
 
