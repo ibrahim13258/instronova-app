@@ -1,7 +1,7 @@
  import 'package:flutter/material.dart';
 import 'package:uni_links/uni_links.dart';
 import 'dart:async';
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import '../constants/app_routes.dart';
 
 class DeepLinkHandler {
@@ -46,12 +46,15 @@ class DeepLinkHandler {
     // Example: myapp://profile/123
     if (path.startsWith('/profile/')) {
       final userId = path.replaceFirst('/profile/', '');
-// TODO: Replace GetX navigation: Get.toNamed(AppRoutes.profile, arguments: {'userId': userId});
-    } else if (path == '/home') {
-// TODO: Replace GetX navigation: Get.toNamed(AppRoutes.home);
-    } else if (path == '/login') {
-// TODO: Replace GetX navigation: Get.toNamed(AppRoutes.login);
-    } else {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.toNamed(AppRoutes.profile, arguments: {'userId': userId});    } else if (path == '/home') {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.toNamed(AppRoutes.home);    } else if (path == '/login') {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.toNamed(AppRoutes.login);    } else {
       debugPrint("Unhandled deep link: $uri");
     }
   }
