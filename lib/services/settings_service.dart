@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import 'package:dio/dio.dart';
 
 // Model for settings
@@ -34,8 +34,9 @@ class SettingsModel {
 }
 
 class SettingsService extends GetxService {
-// TODO: Replace GetX navigation: static SettingsService get to => Get.find();
-
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: static SettingsService get to => Get.find();
   final Dio _dio = Dio();
   final Rx<SettingsModel> _settings = SettingsModel(
     username: '',

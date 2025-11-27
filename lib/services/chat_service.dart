@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import 'package:dio/dio.dart';
 import '../models/chat_model.dart';
 import '../models/message_model.dart';

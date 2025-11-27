@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import '../models/post_model.dart';
 import '../services/api_client.dart';
 
@@ -15,8 +15,9 @@ class SavedPostsService extends GetxService {
       final List<PostModel> posts = await _apiClient.getSavedPosts();
       savedPosts.assignAll(posts);
     } catch (e) {
-// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch saved posts: $e');
-    }
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch saved posts: $e');    }
   }
 
   // Add post to saved posts
@@ -25,11 +26,13 @@ class SavedPostsService extends GetxService {
       final bool success = await _apiClient.savePost(post.id);
       if (success) {
         savedPosts.add(post);
-// TODO: Replace GetX navigation: Get.snackbar('Saved', 'Post added to saved posts');
-      }
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Saved', 'Post added to saved posts');      }
     } catch (e) {
-// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to save post: $e');
-    }
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to save post: $e');    }
   }
 
   // Remove post from saved posts
@@ -38,11 +41,13 @@ class SavedPostsService extends GetxService {
       final bool success = await _apiClient.unsavePost(postId);
       if (success) {
         savedPosts.removeWhere((post) => post.id == postId);
-// TODO: Replace GetX navigation: Get.snackbar('Removed', 'Post removed from saved posts');
-      }
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Removed', 'Post removed from saved posts');      }
     } catch (e) {
-// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to remove post: $e');
-    }
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to remove post: $e');    }
   }
 
   // Check if a post is saved

@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/user_model.dart';
 
@@ -45,8 +45,9 @@ class MultiAccountService extends GetxService {
     final user = _accounts.firstWhereOrNull((u) => u.id == userId);
     if (user != null) {
       _activeAccount.value = user;
-// TODO: Replace GetX navigation: Get.snackbar('Switched', 'Account switched to ${user.username}');
-    }
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Switched', 'Account switched to ${user.username}');    }
   }
 
   /// Remove an account

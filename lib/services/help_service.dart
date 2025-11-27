@@ -1,10 +1,11 @@
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class HelpService extends GetxService {
-// TODO: Replace GetX navigation: static HelpService get to => Get.find();
-
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: static HelpService get to => Get.find();
   // Observables for state
   var isLoading = false.obs;
   var helpTopics = <HelpTopic>[].obs;

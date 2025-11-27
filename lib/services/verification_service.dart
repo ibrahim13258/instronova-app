@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import 'package:http/http.dart' as http;
 import '../models/user_model.dart';
 
@@ -46,8 +46,9 @@ class VerificationService extends GetxService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['status'] == 'pending') {
-// TODO: Replace GetX navigation: Get.snackbar('Verification', 'Your verification request is pending');
-          return true;
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Verification', 'Your verification request is pending');          return true;
         }
       } else {
         errorMessage.value = 'Verification request failed';
