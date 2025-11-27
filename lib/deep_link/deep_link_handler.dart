@@ -1,7 +1,7 @@
  import 'package:flutter/material.dart';
 import 'package:uni_links/uni_links.dart';
 import 'dart:async';
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import '../constants/app_routes.dart';
 
 class DeepLinkHandler {
