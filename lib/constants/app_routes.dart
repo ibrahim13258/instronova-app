@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 import '../screens/splash_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/signup_screen.dart';
