@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 
 class SettingsProvider extends GetxController {
   // Account settings

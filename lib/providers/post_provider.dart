@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import '../models/post_model.dart';
 import '../services/post_service.dart';
 
@@ -22,8 +22,9 @@ class PostProvider extends GetxController {
       var posts = await PostService.getFeedPosts();
       feedPosts.assignAll(posts);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load feed');
-    } finally {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: Get.snackbar('Error', 'Failed to load feed');    } finally {
       isLoadingFeed.value = false;
     }
   }
@@ -35,8 +36,9 @@ class PostProvider extends GetxController {
       PostModel? post = await PostService.getPostDetail(postId);
       selectedPost.value = post;
     } catch (e) {
-      Get.snackbar('Error', 'Failed to load post detail');
-    } finally {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: Get.snackbar('Error', 'Failed to load post detail');    } finally {
       isLoadingPostDetail.value = false;
     }
   }
@@ -56,8 +58,9 @@ class PostProvider extends GetxController {
       }
       selectedPost.refresh();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update like');
-    } finally {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: Get.snackbar('Error', 'Failed to update like');    } finally {
       isLikingPost.value = false;
     }
   }
@@ -71,8 +74,9 @@ class PostProvider extends GetxController {
       selectedPost.value!.comments.add(comment);
       selectedPost.refresh();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to add comment');
-    } finally {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: Get.snackbar('Error', 'Failed to add comment');    } finally {
       isAddingComment.value = false;
     }
   }

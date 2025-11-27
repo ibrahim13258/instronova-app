@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import '../models/user_model.dart';
 import '../services/search_service.dart';
 
@@ -29,8 +29,9 @@ class SearchProvider extends GetxController {
       List<UserModel> results = await SearchService.searchUsers(query);
       searchResults.assignAll(results);
     } catch (e) {
-// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch search results: $e');
-    } finally {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch search results: $e');    } finally {
       isLoading.value = false;
     }
   }

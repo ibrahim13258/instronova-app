@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-// TODO removed missing api_service import
+import '../services/api_service.dart';
 import '../providers/user_provider.dart';
 
 class AuthProvider with ChangeNotifier {

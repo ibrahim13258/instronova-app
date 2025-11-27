@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import '../models/story_model.dart';
 import '../services/story_service.dart';
 
@@ -27,8 +27,9 @@ class StoryProvider extends GetxController {
       List<StoryModel> fetchedStories = await StoryService.getStories();
       stories.assignAll(fetchedStories);
     } catch (e) {
-// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch stories: $e');
-    } finally {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch stories: $e');    } finally {
       isLoading.value = false;
     }
   }
@@ -62,18 +63,21 @@ class StoryProvider extends GetxController {
   // Upload story
   Future<void> uploadStory() async {
     if (selectedMedia == null) {
-// TODO: Replace GetX navigation: Get.snackbar('Error', 'No media selected for upload');
-      return;
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'No media selected for upload');      return;
     }
     try {
       isUploading.value = true;
       StoryModel uploadedStory = await StoryService.uploadStory(selectedMedia!);
       stories.insert(0, uploadedStory); // Add to top
       selectedMedia = null;
-// TODO: Replace GetX navigation: Get.snackbar('Success', 'Story uploaded successfully');
-    } catch (e) {
-// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to upload story: $e');
-    } finally {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Success', 'Story uploaded successfully');    } catch (e) {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to upload story: $e');    } finally {
       isUploading.value = false;
     }
   }
@@ -83,9 +87,11 @@ class StoryProvider extends GetxController {
     try {
       await StoryService.deleteStory(storyId);
       stories.removeWhere((story) => story.id == storyId);
-// TODO: Replace GetX navigation: Get.snackbar('Deleted', 'Story deleted successfully');
-    } catch (e) {
-// TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to delete story: $e');
-    }
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Deleted', 'Story deleted successfully');    } catch (e) {
+// TODO: Replace GetX
+Navigator.of(context).pushNamed('/'); // fallback
+// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to delete story: $e');    }
   }
 }

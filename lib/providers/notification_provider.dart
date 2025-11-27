@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import '../models/notification_model.dart';
 import '../services/notification_service.dart';
 

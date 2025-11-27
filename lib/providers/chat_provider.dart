@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+// TODO: Removed GetX import
 import '../models/chat_model.dart';
 import '../services/chat_service.dart';
 
