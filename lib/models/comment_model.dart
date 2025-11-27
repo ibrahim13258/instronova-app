@@ -1,6 +1,6 @@
 // models/comment_model.dart
 
-import 'package:get/get.dart';
+// GetX removed for Provider consistency
 
 class CommentModel {
   final String id;
