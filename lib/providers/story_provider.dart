@@ -29,7 +29,8 @@ class StoryProvider extends GetxController {
     } catch (e) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch stories: $e');    } finally {
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch stories: $e');    } finally {
       isLoading.value = false;
     }
   }
@@ -65,7 +66,8 @@ Navigator.of(context).pushNamed('/'); // fallback
     if (selectedMedia == null) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'No media selected for upload');      return;
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'No media selected for upload');      return;
     }
     try {
       isUploading.value = true;
@@ -74,10 +76,12 @@ Navigator.of(context).pushNamed('/'); // fallback
       selectedMedia = null;
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Success', 'Story uploaded successfully');    } catch (e) {
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Success', 'Story uploaded successfully');    } catch (e) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to upload story: $e');    } finally {
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to upload story: $e');    } finally {
       isUploading.value = false;
     }
   }
@@ -89,9 +93,11 @@ Navigator.of(context).pushNamed('/'); // fallback
       stories.removeWhere((story) => story.id == storyId);
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Deleted', 'Story deleted successfully');    } catch (e) {
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Deleted', 'Story deleted successfully');    } catch (e) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to delete story: $e');    }
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to delete story: $e');    }
   }
 }

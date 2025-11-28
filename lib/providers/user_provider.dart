@@ -1,3 +1,4 @@
+import '../config/app_config.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -11,7 +12,7 @@ import 'package:workmanager/workmanager.dart';
 
 /// Configuration file
 class AppConfig {
-  static const String baseUrl = "http://YOUR_IP:5000/api/v1/user";
+  static const String baseUrl = "AppConfig.baseUrl/api/v1/user";
   static const String wsUrl = "ws://YOUR_IP:5000/ws";
   static const int maxLoginAttempts = 5;
   static const Duration loginAttemptWindow = Duration(minutes: 15);

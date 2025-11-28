@@ -346,6 +346,7 @@ class AuthProvider with ChangeNotifier {
       
       _mfaCodeExpiry = DateTime.now().add(Duration(minutes: 10));
     } catch (e) {
+      // TODO: Replace with user-friendly error handling
       throw parseError(e);
     } finally {
       _setMfaVerifying(false);
@@ -384,6 +385,7 @@ class AuthProvider with ChangeNotifier {
       _startStatusUpdates();
       
     } catch (e) {
+      // TODO: Replace with user-friendly error handling
       throw parseError(e);
     } finally {
       _setMfaVerifying(false);
@@ -413,6 +415,7 @@ class AuthProvider with ChangeNotifier {
         authToken: await getValidToken(),
       );
     } catch (e) {
+      // TODO: Replace with user-friendly error handling
       throw parseError(e);
     }
   }
@@ -425,6 +428,7 @@ class AuthProvider with ChangeNotifier {
         sessionId: sessionId,
       );
     } catch (e) {
+      // TODO: Replace with user-friendly error handling
       throw parseError(e);
     }
   }
@@ -437,6 +441,7 @@ class AuthProvider with ChangeNotifier {
         excludeDeviceId: _currentDeviceId,
       );
     } catch (e) {
+      // TODO: Replace with user-friendly error handling
       throw parseError(e);
     }
   }
@@ -539,6 +544,7 @@ class AuthProvider with ChangeNotifier {
       
     } catch (e) {
       await _clearAuthTokens();
+      // TODO: Replace with user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);
@@ -572,6 +578,7 @@ class AuthProvider with ChangeNotifier {
       
     } catch (e) {
       await _clearAuthTokens();
+      // TODO: Replace with user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);
@@ -584,6 +591,7 @@ class AuthProvider with ChangeNotifier {
     try {
       await _apiService.forgotPassword(email);
     } catch (e) {
+      // TODO: Replace with user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);
@@ -596,6 +604,7 @@ class AuthProvider with ChangeNotifier {
     try {
       await _apiService.verifyOtp(email, otp);
     } catch (e) {
+      // TODO: Replace with user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);
@@ -608,6 +617,7 @@ class AuthProvider with ChangeNotifier {
     try {
       await _apiService.resetPassword(email, otp, newPassword);
     } catch (e) {
+      // TODO: Replace with user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);
@@ -639,6 +649,7 @@ class AuthProvider with ChangeNotifier {
       _stopStatusUpdates();
       
     } catch (e) {
+      // TODO: Replace with user-friendly error handling
       throw parseError(e);
     } finally {
       _setLoading(false);

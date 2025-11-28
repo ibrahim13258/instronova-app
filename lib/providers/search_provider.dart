@@ -31,7 +31,8 @@ class SearchProvider extends GetxController {
     } catch (e) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch search results: $e');    } finally {
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch search results: $e');    } finally {
       isLoading.value = false;
     }
   }
