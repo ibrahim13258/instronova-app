@@ -1,3 +1,4 @@
+import '../config/app_config.dart';
 // TODO: Removed GetX import
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -5,7 +6,8 @@ import 'dart:convert';
 class HelpService extends GetxService {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: static HelpService get to => Get.find();
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: static HelpService get to => Get.find();
   // Observables for state
   var isLoading = false.obs;
   var helpTopics = <HelpTopic>[].obs;
@@ -17,7 +19,7 @@ Navigator.of(context).pushNamed('/'); // fallback
     isLoading.value = true;
     errorMessage.value = '';
     try {
-      final response = await http.get(Uri.parse('https://api.example.com/help'));
+      final response = await http.get(Uri.parse('AppConfig.baseUrl/help'));
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
         helpTopics.value = data.map((e) => HelpTopic.fromJson(e)).toList();
@@ -36,7 +38,7 @@ Navigator.of(context).pushNamed('/'); // fallback
     isLoading.value = true;
     errorMessage.value = '';
     try {
-      final response = await http.get(Uri.parse('https://api.example.com/about'));
+      final response = await http.get(Uri.parse('AppConfig.baseUrl/about'));
       if (response.statusCode == 200) {
         aboutInfo.value = AboutInfo.fromJson(json.decode(response.body));
       } else {

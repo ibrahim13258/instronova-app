@@ -1,3 +1,4 @@
+import '../config/app_config.dart';
 import 'package:flutter/foundation.dart';
 // TODO: Removed GetX import
 import 'package:dio/dio.dart';
@@ -13,7 +14,7 @@ class StoryService extends GetxService {
   // Fetch all stories
   Future<void> fetchStories() async {
     try {
-      Response response = await _dio.get('https://api.example.com/stories');
+      Response response = await _dio.get('AppConfig.baseUrl/stories');
       _stories.value = (response.data as List)
           .map((json) => StoryModel.fromJson(json))
           .toList();
@@ -26,7 +27,7 @@ class StoryService extends GetxService {
   Future<void> uploadStory(String userId, String mediaUrl, {String? caption}) async {
     try {
       Response response = await _dio.post(
-        'https://api.example.com/stories',
+        'AppConfig.baseUrl/stories',
         data: {
           'userId': userId,
           'mediaUrl': mediaUrl,
@@ -43,7 +44,7 @@ class StoryService extends GetxService {
   Future<void> markStoryViewed(String storyId, String viewerId) async {
     try {
       await _dio.post(
-        'https://api.example.com/stories/$storyId/view',
+        'AppConfig.baseUrl/stories/$storyId/view',
         data: {'viewerId': viewerId},
       );
       // Optional: update local story as viewed
@@ -60,7 +61,7 @@ class StoryService extends GetxService {
   // Delete a story
   Future<void> deleteStory(String storyId) async {
     try {
-      await _dio.delete('https://api.example.com/stories/$storyId');
+      await _dio.delete('AppConfig.baseUrl/stories/$storyId');
       _stories.removeWhere((s) => s.id == storyId);
     } catch (e) {
       debugPrint("Error deleting story: $e");

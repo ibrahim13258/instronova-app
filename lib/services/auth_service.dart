@@ -1,3 +1,4 @@
+import '../config/app_config.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -5,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 /// Configuration
 class AppConfig {
-  static const String baseUrl = "http://YOUR_IP:5000/api/v1/auth";
+  static const String baseUrl = "AppConfig.baseUrl/api/v1/auth";
 }
 
 /// AuthService for Instagram-level app

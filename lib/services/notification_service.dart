@@ -1,3 +1,4 @@
+import '../config/app_config.dart';
 import 'package:flutter/foundation.dart';
 // TODO: Removed GetX import
 import 'package:dio/dio.dart';
@@ -13,7 +14,7 @@ class NotificationService extends GetxService {
   // Fetch all notifications for a user
   Future<void> fetchNotifications(String userId) async {
     try {
-      Response response = await _dio.get('https://api.example.com/users/$userId/notifications');
+      Response response = await _dio.get('AppConfig.baseUrl/users/$userId/notifications');
       _notifications.value = (response.data as List)
           .map((json) => NotificationModel.fromJson(json))
           .toList();
@@ -25,7 +26,7 @@ class NotificationService extends GetxService {
   // Mark a single notification as read
   Future<void> markAsRead(String notificationId) async {
     try {
-      await _dio.put('https://api.example.com/notifications/$notificationId/read');
+      await _dio.put('AppConfig.baseUrl/notifications/$notificationId/read');
       int index = _notifications.indexWhere((n) => n.id == notificationId);
       if (index != -1) {
         _notifications[index].isRead = true;
@@ -39,7 +40,7 @@ class NotificationService extends GetxService {
   // Mark all notifications as read
   Future<void> markAllAsRead(String userId) async {
     try {
-      await _dio.put('https://api.example.com/users/$userId/notifications/read_all');
+      await _dio.put('AppConfig.baseUrl/users/$userId/notifications/read_all');
       for (var notification in _notifications) {
         notification.isRead = true;
       }

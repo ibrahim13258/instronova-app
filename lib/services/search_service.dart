@@ -1,3 +1,4 @@
+import '../config/app_config.dart';
 import 'package:flutter/foundation.dart';
 // TODO: Removed GetX import
 import 'package:dio/dio.dart';
@@ -21,7 +22,7 @@ class SearchService extends GetxService {
   // Search users
   Future<void> searchUsers(String query) async {
     try {
-      Response response = await _dio.get('https://api.example.com/search/users', queryParameters: {
+      Response response = await _dio.get('AppConfig.baseUrl/search/users', queryParameters: {
         'q': query,
       });
       _userResults.value = (response.data as List)
@@ -36,7 +37,7 @@ class SearchService extends GetxService {
   // Search posts
   Future<void> searchPosts(String query) async {
     try {
-      Response response = await _dio.get('https://api.example.com/search/posts', queryParameters: {
+      Response response = await _dio.get('AppConfig.baseUrl/search/posts', queryParameters: {
         'q': query,
       });
       _postResults.value = (response.data as List)
@@ -51,7 +52,7 @@ class SearchService extends GetxService {
   // Fetch trending hashtags
   Future<void> fetchTrendingHashtags() async {
     try {
-      Response response = await _dio.get('https://api.example.com/search/trending_hashtags');
+      Response response = await _dio.get('AppConfig.baseUrl/search/trending_hashtags');
       _trendingHashtags.value = List<String>.from(response.data);
     } catch (e) {
       debugPrint("Error fetching trending hashtags: $e");

@@ -17,7 +17,8 @@ class SavedPostsService extends GetxService {
     } catch (e) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch saved posts: $e');    }
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to fetch saved posts: $e');    }
   }
 
   // Add post to saved posts
@@ -28,11 +29,13 @@ Navigator.of(context).pushNamed('/'); // fallback
         savedPosts.add(post);
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Saved', 'Post added to saved posts');      }
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Saved', 'Post added to saved posts');      }
     } catch (e) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to save post: $e');    }
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to save post: $e');    }
   }
 
   // Remove post from saved posts
@@ -43,11 +46,13 @@ Navigator.of(context).pushNamed('/'); // fallback
         savedPosts.removeWhere((post) => post.id == postId);
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Removed', 'Post removed from saved posts');      }
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Removed', 'Post removed from saved posts');      }
     } catch (e) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to remove post: $e');    }
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Error', 'Failed to remove post: $e');    }
   }
 
   // Check if a post is saved

@@ -48,7 +48,8 @@ class VerificationService extends GetxService {
         if (data['status'] == 'pending') {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Verification', 'Your verification request is pending');          return true;
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Verification', 'Your verification request is pending');          return true;
         }
       } else {
         errorMessage.value = 'Verification request failed';

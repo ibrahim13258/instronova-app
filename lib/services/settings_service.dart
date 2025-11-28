@@ -1,3 +1,4 @@
+import '../config/app_config.dart';
 import 'package:flutter/foundation.dart';
 // TODO: Removed GetX import
 import 'package:dio/dio.dart';
@@ -36,7 +37,8 @@ class SettingsModel {
 class SettingsService extends GetxService {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: static SettingsService get to => Get.find();
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: static SettingsService get to => Get.find();
   final Dio _dio = Dio();
   final Rx<SettingsModel> _settings = SettingsModel(
     username: '',
@@ -51,7 +53,7 @@ Navigator.of(context).pushNamed('/'); // fallback
   // Fetch settings from API
   Future<void> fetchSettings() async {
     try {
-      final response = await _dio.get('https://api.yourapp.com/settings');
+      final response = await _dio.get('AppConfig.baseUrl/settings');
       _settings.value = SettingsModel.fromJson(response.data);
     } catch (e) {
       debugPrint('Error fetching settings: $e');
@@ -62,7 +64,7 @@ Navigator.of(context).pushNamed('/'); // fallback
   Future<void> updateAccount({required String username, required String email}) async {
     try {
       final response = await _dio.put(
-        'https://api.yourapp.com/settings/account',
+        'AppConfig.baseUrl/settings/account',
         data: {'username': username, 'email': email},
       );
       _settings.update((val) {
@@ -80,7 +82,7 @@ Navigator.of(context).pushNamed('/'); // fallback
   Future<void> updatePrivacy({required bool isPrivate}) async {
     try {
       final response = await _dio.put(
-        'https://api.yourapp.com/settings/privacy',
+        'AppConfig.baseUrl/settings/privacy',
         data: {'isPrivate': isPrivate},
       );
       _settings.update((val) {
@@ -95,7 +97,7 @@ Navigator.of(context).pushNamed('/'); // fallback
   Future<void> updateSecurity({required bool twoFactorEnabled}) async {
     try {
       final response = await _dio.put(
-        'https://api.yourapp.com/settings/security',
+        'AppConfig.baseUrl/settings/security',
         data: {'twoFactorEnabled': twoFactorEnabled},
       );
       _settings.update((val) {

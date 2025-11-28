@@ -24,7 +24,8 @@ class PostProvider extends GetxController {
     } catch (e) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: Get.snackbar('Error', 'Failed to load feed');    } finally {
+// TODO: GetX usage commented out
+// // OLD: Get.snackbar('Error', 'Failed to load feed');    } finally {
       isLoadingFeed.value = false;
     }
   }
@@ -38,7 +39,8 @@ Navigator.of(context).pushNamed('/'); // fallback
     } catch (e) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: Get.snackbar('Error', 'Failed to load post detail');    } finally {
+// TODO: GetX usage commented out
+// // OLD: Get.snackbar('Error', 'Failed to load post detail');    } finally {
       isLoadingPostDetail.value = false;
     }
   }
@@ -60,7 +62,8 @@ Navigator.of(context).pushNamed('/'); // fallback
     } catch (e) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: Get.snackbar('Error', 'Failed to update like');    } finally {
+// TODO: GetX usage commented out
+// // OLD: Get.snackbar('Error', 'Failed to update like');    } finally {
       isLikingPost.value = false;
     }
   }
@@ -76,7 +79,8 @@ Navigator.of(context).pushNamed('/'); // fallback
     } catch (e) {
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: Get.snackbar('Error', 'Failed to add comment');    } finally {
+// TODO: GetX usage commented out
+// // OLD: Get.snackbar('Error', 'Failed to add comment');    } finally {
       isAddingComment.value = false;
     }
   }

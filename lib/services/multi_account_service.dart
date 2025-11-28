@@ -47,7 +47,8 @@ class MultiAccountService extends GetxService {
       _activeAccount.value = user;
 // TODO: Replace GetX
 Navigator.of(context).pushNamed('/'); // fallback
-// OLD: // TODO: Replace GetX navigation: Get.snackbar('Switched', 'Account switched to ${user.username}');    }
+// TODO: GetX usage commented out
+// // OLD: // TODO: Replace GetX navigation: Get.snackbar('Switched', 'Account switched to ${user.username}');    }
   }
 
   /// Remove an account

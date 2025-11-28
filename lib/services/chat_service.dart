@@ -1,3 +1,4 @@
+import '../config/app_config.dart';
 import 'package:flutter/foundation.dart';
 // TODO: Removed GetX import
 import 'package:dio/dio.dart';
@@ -17,7 +18,7 @@ class ChatService extends GetxService {
   // Fetch chat list
   Future<void> fetchChatList(String userId) async {
     try {
-      Response response = await _dio.get('https://api.example.com/users/$userId/chats');
+      Response response = await _dio.get('AppConfig.baseUrl/users/$userId/chats');
       _chatList.value = (response.data as List)
           .map((json) => ChatModel.fromJson(json))
           .toList();
@@ -29,7 +30,7 @@ class ChatService extends GetxService {
   // Fetch messages for a chat
   Future<void> fetchMessages(String chatId) async {
     try {
-      Response response = await _dio.get('https://api.example.com/chats/$chatId/messages');
+      Response response = await _dio.get('AppConfig.baseUrl/chats/$chatId/messages');
       _messages[chatId] = (response.data as List)
           .map((json) => MessageModel.fromJson(json))
           .toList();
@@ -42,7 +43,7 @@ class ChatService extends GetxService {
   Future<void> sendMessage(String chatId, MessageModel message) async {
     try {
       Response response = await _dio.post(
-        'https://api.example.com/chats/$chatId/messages',
+        'AppConfig.baseUrl/chats/$chatId/messages',
         data: message.toJson(),
       );
       // Add sent message to local list

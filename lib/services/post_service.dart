@@ -1,3 +1,4 @@
+import '../config/app_config.dart';
 import 'package:flutter/foundation.dart';
 // TODO: Removed GetX import
 import 'package:dio/dio.dart';
@@ -19,7 +20,7 @@ class PostService extends GetxService {
   // Fetch feed posts
   Future<void> fetchFeed() async {
     try {
-      Response response = await _dio.get('https://api.example.com/posts/feed');
+      Response response = await _dio.get('AppConfig.baseUrl/posts/feed');
       _feedPosts.value = (response.data as List)
           .map((json) => PostModel.fromJson(json))
           .toList();
@@ -32,7 +33,7 @@ class PostService extends GetxService {
   Future<void> addPost(PostModel newPost) async {
     try {
       Response response = await _dio.post(
-        'https://api.example.com/posts',
+        'AppConfig.baseUrl/posts',
         data: newPost.toJson(),
       );
       _feedPosts.insert(0, PostModel.fromJson(response.data)); // add to top of feed
@@ -44,7 +45,7 @@ class PostService extends GetxService {
   // Fetch post details
   Future<void> fetchPostDetail(String postId) async {
     try {
-      Response response = await _dio.get('https://api.example.com/posts/$postId');
+      Response response = await _dio.get('AppConfig.baseUrl/posts/$postId');
       _postDetail.value = PostModel.fromJson(response.data);
       await fetchComments(postId); // load comments for post
     } catch (e) {
@@ -55,7 +56,7 @@ class PostService extends GetxService {
   // Fetch comments for a post
   Future<void> fetchComments(String postId) async {
     try {
-      Response response = await _dio.get('https://api.example.com/posts/$postId/comments');
+      Response response = await _dio.get('AppConfig.baseUrl/posts/$postId/comments');
       _comments.value = (response.data as List)
           .map((json) => CommentModel.fromJson(json))
           .toList();
@@ -68,7 +69,7 @@ class PostService extends GetxService {
   Future<void> addComment(String postId, CommentModel comment) async {
     try {
       Response response = await _dio.post(
-        'https://api.example.com/posts/$postId/comments',
+        'AppConfig.baseUrl/posts/$postId/comments',
         data: comment.toJson(),
       );
       _comments.add(CommentModel.fromJson(response.data));
@@ -80,7 +81,7 @@ class PostService extends GetxService {
   // Like a post
   Future<void> likePost(String postId) async {
     try {
-      await _dio.post('https://api.example.com/posts/$postId/like');
+      await _dio.post('AppConfig.baseUrl/posts/$postId/like');
       await fetchPostDetail(postId); // refresh post detail
     } catch (e) {
       debugPrint("Error liking post: $e");
@@ -90,7 +91,7 @@ class PostService extends GetxService {
   // Unlike a post
   Future<void> unlikePost(String postId) async {
     try {
-      await _dio.post('https://api.example.com/posts/$postId/unlike');
+      await _dio.post('AppConfig.baseUrl/posts/$postId/unlike');
       await fetchPostDetail(postId); // refresh post detail
     } catch (e) {
       debugPrint("Error unliking post: $e");
