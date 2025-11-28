@@ -1,8 +1,18 @@
 // File: screens/feed_screen.dart
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+
+import '../config/app_config.dart';
 import '../widgets/feed_post_item.dart';
 import '../widgets/story_list.dart';
 
+/// Home feed screen with real API integration skeleton.
+/// This implementation removes dummy data and wires the screen
+/// to a paginated HTTP GET on `${AppConfig.baseUrl}/posts`.
+///
+/// NOTE:
+/// - Adjust the endpoint or queryParameters according to your backend.
+/// - Map the `post` structure inside [FeedPostItem] as needed.
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
 
@@ -12,88 +22,162 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   final ScrollController _scrollController = ScrollController();
-  List<Map<String, dynamic>> posts = List.generate(
-    10,
-    (index) => {
-      "username": "user$index",
-      "profileImage": "https://i.pravatar.cc/150?img=$index",
-      "postImage": "https://picsum.photos/500/500?random=$index",
-      "likes": 10 + index,
-      "caption": "This is post $index",
-    },
-  );
+  final Dio _dio = Dio();
 
-  bool isLoadingMore = false;
+  final List<dynamic> _posts = [];
+  bool _isLoading = false;
+  bool _isLoadingMore = false;
+  bool _hasMore = true;
+  String? _errorMessage;
+
+  int _page = 1;
+  final int _limit = 10;
 
   @override
   void initState() {
     super.initState();
+    _fetchPosts();
     _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _onScroll() {
     if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent - 100 &&
-        !isLoadingMore) {
-      _loadMorePosts();
+            _scrollController.position.maxScrollExtent - 200 &&
+        !_isLoadingMore &&
+        _hasMore &&
+        !_isLoading) {
+      _fetchPosts(loadMore: true);
     }
   }
 
-  Future<void> _loadMorePosts() async {
-    setState(() => isLoadingMore = true);
-    await Future.delayed(const Duration(seconds: 2));
-    List<Map<String, dynamic>> newPosts = List.generate(
-      5,
-      (index) => {
-        "username": "user${posts.length + index}",
-        "profileImage":
-            "https://i.pravatar.cc/150?img=${posts.length + index}",
-        "postImage":
-            "https://picsum.photos/500/500?random=${posts.length + index}",
-        "likes": posts.length + index,
-        "caption": "New post ${posts.length + index}",
-      },
-    );
+  Future<void> _fetchPosts({bool loadMore = false}) async {
+    if (_isLoading || (loadMore && !_hasMore)) return;
+
     setState(() {
-      posts.addAll(newPosts);
-      isLoadingMore = false;
+      if (loadMore) {
+        _isLoadingMore = true;
+      } else {
+        _isLoading = true;
+        _errorMessage = null;
+      }
     });
+
+    try {
+      final response = await _dio.get(
+        '\${AppConfig.baseUrl}/posts',
+        queryParameters: {
+          'page': _page,
+          'limit': _limit,
+        },
+      );
+
+      List<dynamic> items = [];
+      final data = response.data;
+
+      if (data is List) {
+        items = data;
+      } else if (data is Map && data['data'] is List) {
+        items = data['data'] as List<dynamic>;
+      }
+
+      setState(() {
+        if (loadMore) {
+          _posts.addAll(items);
+        } else {
+          _posts
+            ..clear()
+            ..addAll(items);
+        }
+
+        if (items.length < _limit) {
+          _hasMore = false;
+        } else {
+          _page += 1;
+        }
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage ??= 'Failed to load feed. Please try again.';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _isLoadingMore = false;
+      });
+    }
   }
 
   Future<void> _refreshPosts() async {
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      posts = List.generate(
-        10,
-        (index) => {
-          "username": "user$index",
-          "profileImage": "https://i.pravatar.cc/150?img=$index",
-          "postImage": "https://picsum.photos/500/500?random=$index",
-          "likes": 10 + index,
-          "caption": "Refreshed post $index",
-        },
-      );
-    });
+    _page = 1;
+    _hasMore = true;
+    await _fetchPosts();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading && _posts.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_errorMessage != null && _posts.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              _errorMessage!,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: _fetchPosts,
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
+
     return RefreshIndicator(
       onRefresh: _refreshPosts,
       child: ListView.builder(
         controller: _scrollController,
-        itemCount: posts.length + 2, // +1 for stories, +1 for loading
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: _posts.length + 2 + (_isLoadingMore ? 1 : 0),
         itemBuilder: (context, index) {
-          if (index == 0) return const StoryList();
-          if (index == posts.length + 1) {
-            return isLoadingMore
-                ? const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Center(child: CircularProgressIndicator()),
-                  )
-                : const SizedBox.shrink();
+          // Top stories section
+          if (index == 0) {
+            return const StoryList();
           }
-          final post = posts[index - 1];
+
+          // Spacer under stories
+          if (index == 1) {
+            return const SizedBox(height: 8);
+          }
+
+          final postIndex = index - 2;
+
+          if (postIndex >= _posts.length) {
+            // Loading-more indicator at the end
+            if (_isLoadingMore) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          }
+
+          final post = _posts[postIndex];
+
           return FeedPostItem(post: post);
         },
       ),
